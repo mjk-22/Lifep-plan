@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:lifeplan/worldclock.dart';
 
+import 'companion.dart';
+
 class TimerScreen extends StatefulWidget {
   const TimerScreen({super.key});
 
@@ -169,7 +171,29 @@ class _TimerScreenState extends State<TimerScreen> {
         type: BottomNavigationBarType.fixed,
         selectedItemColor: Colors.black,
         unselectedItemColor: Colors.grey,
-        currentIndex: 1,
+        currentIndex: 1, // timer index
+        onTap: (index) {
+          switch (index) {
+            case 0:
+            // Navigator.push(context, MaterialPageRoute(builder: (_) => SchedulesPage()));
+              break;
+            case 1:
+            // Navigator.push(context, MaterialPageRoute(builder: (_) => TimerPage()));
+              break;
+            case 2:
+            // Navigator.push(context, MaterialPageRoute(builder: (_) => HomePage()));
+              break;
+            case 3:
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const CompanionPage()),
+              );
+              break;
+            case 4:
+            // Navigator.push(context, MaterialPageRoute(builder: (_) => PlannerPage()));
+              break;
+          }
+        },
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.calendar_today), label: "Schedules"),
           BottomNavigationBarItem(icon: Icon(Icons.wb_sunny), label: "Timer"),
@@ -178,6 +202,7 @@ class _TimerScreenState extends State<TimerScreen> {
           BottomNavigationBarItem(icon: Icon(Icons.calendar_view_day), label: "Planner"),
         ],
       ),
+
     );
   }
 
