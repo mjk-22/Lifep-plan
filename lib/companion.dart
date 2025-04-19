@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:lifeplan/worldclock.dart';
 
+import 'companionshop.dart';
+
+
+// Main Companion Page
 class CompanionPage extends StatefulWidget {
   const CompanionPage({super.key});
 
@@ -68,7 +72,7 @@ class _CompanionPageState extends State<CompanionPage> {
 
             const SizedBox(height: 20),
 
-// Alternate Dialogue Description and Box
+            // Alternate Dialogue Description and Box
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 30.0),
               child: Column(
@@ -98,7 +102,7 @@ class _CompanionPageState extends State<CompanionPage> {
                       ],
                     ),
                     child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start, // Align text properly
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Radio<String>(
                           value: alternateDialogue,
@@ -114,7 +118,8 @@ class _CompanionPageState extends State<CompanionPage> {
                         const SizedBox(width: 8),
                         Expanded(
                           child: Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 12.0),
+                            padding:
+                            const EdgeInsets.symmetric(vertical: 12.0),
                             child: Text(
                               alternateDialogue,
                               style: const TextStyle(
@@ -131,8 +136,6 @@ class _CompanionPageState extends State<CompanionPage> {
               ),
             ),
 
-
-
             const SizedBox(height: 20),
 
             // Companion Image
@@ -142,6 +145,35 @@ class _CompanionPageState extends State<CompanionPage> {
                 height: 400,
               ),
             ),
+
+            // Shop Button
+            const SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const ShopCompanionPage()),
+                );
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.teal.shade700,
+                padding:
+                const EdgeInsets.symmetric(horizontal: 30, vertical: 12),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
+              child: const Text(
+                'Shop New Companion',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 14,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            const SizedBox(height: 30),
           ],
         ),
       ),
