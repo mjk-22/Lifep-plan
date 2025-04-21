@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "749770628450",
+    "project_id": "lifeplan-20378",
+    "storage_bucket": "lifeplan-20378.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:749770628450:android:02b30e877cc7a7ecb2a03b",
+        "android_client_info": {
+          "package_name": "com.example.lifeplan"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA4DQnexpU3TzxvWTOFk0dhN1ZW3YyIeJc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
