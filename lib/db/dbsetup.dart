@@ -5,33 +5,45 @@ import 'package:lifeplan/entities/account.dart';
 import 'package:lifeplan/entities/companion.dart';
 import 'package:lifeplan/entities/event.dart';
 
-class Database {
+class LifeplanDatabase {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
   final FirebaseAuth _auth = FirebaseAuth.instance;
   static int counter = 0;
-  User? currentUser;
+  late User? _currentUser;
+  User? get currentUser => _currentUser;
 
-  Future<void> addAccount(String email, String username, String password,
-      Companion companion) async {
+  Future<bool> addAccount(String email, String password) async {
     try {
-      UserCredential uc = await _auth.createUserWithEmailAndPassword(
-          email: email,
-          password: password
-      );
-
-
-      await _db.collection('accounts').doc(uc.user!.uid).set({
-        'email': email,
-        'username': username,
-        'companion': companion.toMap(),
-        'events': null
-      });
-
-      currentUser = FirebaseAuth.instance.currentUser;
-    } on FirebaseAuthException catch (e) {
-      print('Registration Failed: ${e.message}');
+      // UserCredential uc = await _auth.createUserWithEmailAndPassword(
+      //     email: email,
+      //     password: password
+      // );
+      //
+      // await uc.user!.sendEmailVerification();
+      //
+      // await _db.collection('accounts').doc(uc.user!.uid).set({
+      //   'email': email,
+      //   'username': "User",
+      //   'companion': null,
+      //   'is_notification_on' : false,
+      //   'events': []
+      // });
+      //
+      // _currentUser = FirebaseAuth.instance.currentUser;
+     await _db.collection('accounts').add({
+      'email': email,
+      'username': "User",
+      'companion': null,
+      'is_notification_on' : false,
+      'events': []
+    });
+      return true;
+    } on Exception catch (e) {
+      return false;
     }
   }
+
+
 
   Future<bool> addEvent(Event event) async {
     User? user = FirebaseAuth.instance.currentUser;

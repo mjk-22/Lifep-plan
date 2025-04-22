@@ -2,17 +2,17 @@ import 'event.dart';
 import 'companion.dart';
 class Account {
   String _email;
-  String _username;
+  String? _username;
   bool _isNotificationOn;
   Map<String, List<Event>>? _events;
-  Companion _companion;
+  Companion? _companion;
 
   Account({
     required String email,
-    required String username,
+    required String? username,
     required bool isNotificationOn,
     required Map<String, List<Event>>? events,
-    required Companion companion
+    required Companion? companion
   }): _email = email,
       _username = username,
       _isNotificationOn = isNotificationOn,
@@ -27,11 +27,11 @@ class Account {
     _email = email;
   }
 
-  String get username {
+  String? get username {
     return _username;
   }
 
-  set username(String username) {
+  set username(String? username) {
     _username = username;
   }
 
@@ -51,11 +51,11 @@ class Account {
   }
 
 
-  Companion get companion {
+  Companion? get companion {
     return _companion;
   }
 
-  set companion(Companion companion) {
+  set companion(Companion? companion) {
     _companion = companion;
   }
 
@@ -63,7 +63,7 @@ class Account {
     return Account(
         email: map['email'],
         username: map['username'],
-        isNotificationOn: map['isNotificationOn'],
+        isNotificationOn: map['is_notification_on'],
         events: Map<String, List<Event>>.from(map['events']),
         companion: Companion.fromMap(map['companion'])
     );
