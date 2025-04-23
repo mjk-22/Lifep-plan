@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 import 'dart:math';
 
-import 'package:lifeplan/timer.dart';
+import 'package:lifeplan/navPages/timer.dart';
 
 import 'companion.dart';
 

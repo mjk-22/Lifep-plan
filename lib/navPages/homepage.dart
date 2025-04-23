@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
-
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
@@ -25,10 +24,10 @@ class _HomePageState extends State<HomePage> {
       currentIndex = index;
     });
   }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      bottomNavigationBar: bottomNav(currentIndex),
         appBar: AppBar(
             backgroundColor: Color(0xFFDCF0F0),
             bottom: PreferredSize(
@@ -105,13 +104,14 @@ class _HomePageState extends State<HomePage> {
                           style: TextStyle(fontSize: 20),
                         )
                       ],
-                    )
+                    ),
                   ],
                 ),
               ),
             ],
           ),
-        ));
+        )
+    );
   }
 
   Widget bottomNav(index) {
@@ -327,8 +327,11 @@ class _HomePageState extends State<HomePage> {
       child: ElevatedButton(
           style: ElevatedButton.styleFrom(
               backgroundColor: buttonColor, elevation: 0),
-          onPressed: () {
-            createDialog(context);
+          onPressed: () async{
+            await createDialog(context);
+            setState(() {
+
+            });
           },
           child: Text(
             message,
@@ -337,101 +340,35 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  void createDialog(BuildContext context) {
-    showDialog(
+  Future<void> createDialog(BuildContext context) async{
+    await showDialog(
       context: context,
+      barrierDismissible: false,
       builder: (context) {
-        return AlertDialog(
-          backgroundColor: Color(0xFFE3FFFF),
-          title: Text("Create Event"),
-          content: SingleChildScrollView(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text("Date:", style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),),
-                SizedBox(height: 5),
-                SizedBox(
-                  height: 40,
-                  width: 250,
-                  child: TextFormField(
-                    controller: dateController,
-                    cursorColor: Colors.black,
-                    keyboardType: TextInputType.number,
-                    inputFormatters: [
-                      MaskTextInputFormatter(mask: '##/##/##'),
-                    ],
-                    decoration: InputDecoration(
-                      labelText: "mm/dd/yy",
-                      labelStyle: TextStyle(color: Colors.black),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.transparent),
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.grey),
-                      ),
-                    ),
-                  ),
-                ),
-                SizedBox(height: 15),
-                Text("Title:", style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),),
-                SizedBox(height: 5),
-                SizedBox(
-                  height: 40,
-                  width: 250,
-                  child: TextFormField(
-                    controller: titleController,
-                    cursorColor: Colors.black,
-                    keyboardType: TextInputType.number,
-                    decoration: InputDecoration(
-                      labelStyle: TextStyle(color: Colors.black),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.transparent),
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.grey),
-                      ),
-                    ),
-                  ),
-                ),
-                SizedBox(height: 15),
-                Text("Location:", style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),),
-                SizedBox(height: 5),
-                SizedBox(
-                  height: 40,
-                  width: 250,
-                  child: TextFormField(
-                    controller: titleController,
-                    cursorColor: Colors.black,
-                    keyboardType: TextInputType.number,
-                    decoration: InputDecoration(
-                      labelStyle: TextStyle(color: Colors.black),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.transparent),
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.grey),
-                      ),
-                    ),
-                  ),
-                ),
-                SizedBox(height: 15,),
-                Text("Start Time:",style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500)),
-                SizedBox(height: 5),
-                Row(
+        return StatefulBuilder(
+          builder: (context, setStateDialog) {
+            return AlertDialog(
+              backgroundColor: Color(0xFFE3FFFF),
+              title: Text("Create Event"),
+              content: SingleChildScrollView(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    Text("Date:", style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),),
+                    SizedBox(height: 5),
                     SizedBox(
                       height: 40,
                       width: 250,
                       child: TextFormField(
-                        controller: startController,
+                        controller: dateController,
                         cursorColor: Colors.black,
                         keyboardType: TextInputType.number,
                         inputFormatters: [
-                          MaskTextInputFormatter(mask: '##:##'),
+                          MaskTextInputFormatter(mask: '##/##/##'),
                         ],
                         decoration: InputDecoration(
-                          labelText: "00:00",
+                          labelText: "mm/dd/yy",
                           labelStyle: TextStyle(color: Colors.black),
                           focusedBorder: OutlineInputBorder(
                             borderSide: BorderSide(color: Colors.transparent),
@@ -439,35 +376,20 @@ class _HomePageState extends State<HomePage> {
                           enabledBorder: OutlineInputBorder(
                             borderSide: BorderSide(color: Colors.grey),
                           ),
-                          suffixIcon: _dropdown(selectedStart, (newValue) {
-                            setState(() {
-                              selectedStart = newValue!;
-                            });
-                          }),
                         ),
-
                       ),
                     ),
-                  ],
-                ),
-                SizedBox(height: 15),
-                Text("End Time:",style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500)),
-                SizedBox(height: 5),
-                Row(
-                  children: [
+                    SizedBox(height: 15),
+                    Text("Title:", style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),),
+                    SizedBox(height: 5),
                     SizedBox(
                       height: 40,
                       width: 250,
                       child: TextFormField(
-                        controller: endController,
+                        controller: titleController,
                         cursorColor: Colors.black,
                         keyboardType: TextInputType.number,
-                        inputFormatters: [
-                          MaskTextInputFormatter(mask: '##:##'),
-                        ],
                         decoration: InputDecoration(
-
-                          labelText: "00:00",
                           labelStyle: TextStyle(color: Colors.black),
                           focusedBorder: OutlineInputBorder(
                             borderSide: BorderSide(color: Colors.transparent),
@@ -475,36 +397,123 @@ class _HomePageState extends State<HomePage> {
                           enabledBorder: OutlineInputBorder(
                             borderSide: BorderSide(color: Colors.grey),
                           ),
-                          suffixIcon: _dropdown(selectedStart, (newValue) {
-                            setState(() {
-                              selectedStart = newValue!;
-                            });
-                          }),
                         ),
                       ),
                     ),
+                    SizedBox(height: 15),
+                    Text("Location:", style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),),
+                    SizedBox(height: 5),
+                    SizedBox(
+                      height: 40,
+                      width: 250,
+                      child: TextFormField(
+                        controller: locationController,
+                        cursorColor: Colors.black,
+                        keyboardType: TextInputType.number,
+                        decoration: InputDecoration(
+                          labelStyle: TextStyle(color: Colors.black),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.transparent),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.grey),
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 15,),
+                    Text("Start Time:",style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500)),
+                    SizedBox(height: 5),
+                    Row(
+                      children: [
+                        SizedBox(
+                          height: 40,
+                          width: 250,
+                          child: TextFormField(
+                            controller: startController,
+                            cursorColor: Colors.black,
+                            keyboardType: TextInputType.number,
+                            inputFormatters: [
+                              MaskTextInputFormatter(mask: '##:##'),
+                            ],
+                            decoration: InputDecoration(
+                              labelText: "00:00",
+                              labelStyle: TextStyle(color: Colors.black),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(color: Colors.transparent),
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(color: Colors.grey),
+                              ),
+                              suffixIcon: _dropdown(selectedStart, (newValue) {
+                                setStateDialog(() {
+                                  selectedStart = newValue!;
+                                });
+                              }),
+                            ),
 
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 15),
+                    Text("End Time:",style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500)),
+                    SizedBox(height: 5),
+                    Row(
+                      children: [
+                        SizedBox(
+                          height: 40,
+                          width: 250,
+                          child: TextFormField(
+                            controller: endController,
+                            cursorColor: Colors.black,
+                            keyboardType: TextInputType.number,
+                            inputFormatters: [
+                              MaskTextInputFormatter(mask: '##:##'),
+                            ],
+                            decoration: InputDecoration(
+
+                              labelText: "00:00",
+                              labelStyle: TextStyle(color: Colors.black),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(color: Colors.transparent),
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(color: Colors.grey),
+                              ),
+                              suffixIcon: _dropdown(selectedEnd, (newValue) {
+                                setStateDialog(() {
+                                  selectedEnd = newValue!;
+                                });
+                              }),
+                            ),
+                          ),
+                        ),
+
+                      ],
+                    ),
                   ],
+                ),
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () {
+
+                    Navigator.pop(context);
+                  },
+                  child: Text("Create", style: TextStyle(color: Colors.black),),
+                ),
+                TextButton(
+                  onPressed: () {
+
+                    Navigator.pop(context);
+                  },
+                  child: Text("Cancel", style: TextStyle(color: Colors.black)),
                 ),
               ],
-            ),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () {
+            );
+          },
 
-                Navigator.pop(context);
-              },
-              child: Text("Create", style: TextStyle(color: Colors.black),),
-            ),
-            TextButton(
-              onPressed: () {
-
-                Navigator.pop(context);
-              },
-              child: Text("Cancel", style: TextStyle(color: Colors.black)),
-            ),
-          ],
         );
       },
     );

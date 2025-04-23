@@ -9,7 +9,12 @@ import 'accountpage.dart';
 import 'companiongender.dart';
 import 'femalecompanion.dart';
 import 'masculinecompanion.dart';
-import 'homepage.dart';
+import 'navpage.dart';
+import 'navPages/homepage.dart';
+import 'navPages/schedules.dart';
+import 'navPages/timer.dart';
+import 'navPages/planner.dart';
+import 'navPages/companion.dart';
 
 Future<void> main() async{
   WidgetsFlutterBinding.ensureInitialized();
@@ -31,14 +36,18 @@ class MyPlanner extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       routes: {
-        '/' : (context) => HomePage(),
-        'home' : (context) => HomePage(),
+        '/' : (context) => NavPage(),
+        '/home' : (context) => HomePage(),
         '/login' : (context) => LoginPage(),
         '/createaccount' : (context) => CreateAccount(),
         '/startjourney' : (context) => AccountPage(),
          '/masc' : (context) => MaleCompanion(),
         '/fem' : (context) => FemaleCompanion(),
-        'companiongender' : (context) => CompanionGender()
+        '/companiongender' : (context) => CompanionGender(),
+        '/schedules' : (context) => SchedulesPage(),
+        '/timer' : (context) => TimerScreen(),
+        '/planner' : (context) => PlannerPage(),
+        '/companion' : (context) => CompanionPage()
       },
     );
   }

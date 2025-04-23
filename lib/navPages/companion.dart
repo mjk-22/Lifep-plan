@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:lifeplan/worldclock.dart';
+import 'package:lifeplan/navPages/worldclock.dart';
 
-import 'companionshop.dart';
+import '../companionshop.dart';
 
 
 // Main Companion Page

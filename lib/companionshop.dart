@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:lifeplan/worldclock.dart';
+import 'package:lifeplan/navPages/worldclock.dart';
 
 class ShopCompanionPage extends StatelessWidget {
   const ShopCompanionPage({super.key});
