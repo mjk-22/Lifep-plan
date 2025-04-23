@@ -1,7 +1,7 @@
 class Companion {
   int _companionId;
   String _name;
-  Gender _gender;
+  String _gender;
   List<String> _replies;
   String _image;
 
@@ -10,7 +10,7 @@ class Companion {
     required int companionId,
     required List<String> replies,
     required String name,
-    required Gender gender,
+    required String gender,
     required String image
   }):
       _companionId = companionId,
@@ -38,9 +38,9 @@ class Companion {
     _companionId = value;
   }
 
-  Gender get gender => _gender;
+  String get gender => _gender;
 
-  set gender(Gender value) {
+  set gender(String value) {
     _gender = value;
   }
 
@@ -57,21 +57,18 @@ class Companion {
       'name' : name,
       'gender' : gender,
       'replies' : replies,
-      'companion_image' : image
+      'image_path' : image
     };
   }
 
   factory Companion.fromMap(Map<String, dynamic> map) {
     return Companion(
-    companionId: map['companionId'],
+    companionId: map['companion_id'],
     replies: List<String>.from(map['replies']),
     name: map['name'],
     gender: map['gender'],
-    image: map['image']
+    image: map['image_path']
   );
   }
 }
 
-enum Gender {
-  MALE, FEMALE
-}

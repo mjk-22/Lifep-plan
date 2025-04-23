@@ -3,10 +3,13 @@ import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:lifeplan/onboardingscreen.dart';
 import 'package:lifeplan/loginpage.dart';
 import 'package:lifeplan/createaccount.dart';
 import 'accountpage.dart';
+import 'companiongender.dart';
+import 'femalecompanion.dart';
+import 'masculinecompanion.dart';
+import 'homepage.dart';
 
 Future<void> main() async{
   WidgetsFlutterBinding.ensureInitialized();
@@ -28,10 +31,14 @@ class MyPlanner extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       routes: {
-        '/' : (context) => OnboardingScreen(),
+        '/' : (context) => HomePage(),
+        'home' : (context) => HomePage(),
         '/login' : (context) => LoginPage(),
         '/createaccount' : (context) => CreateAccount(),
         '/startjourney' : (context) => AccountPage(),
+         '/masc' : (context) => MaleCompanion(),
+        '/fem' : (context) => FemaleCompanion(),
+        'companiongender' : (context) => CompanionGender()
       },
     );
   }

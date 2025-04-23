@@ -212,10 +212,10 @@ class LifeplanDatabase {
   }
 
   // ### Companion CRUD functions ###
-  Future<bool> addCompanion(String name, Gender gender, List<String> replies, String image) async {
+  Future<bool> addCompanion(String name, String gender, List<String> replies, String image) async {
     counter++;
     try {
-      await _db.collection('accounts').doc(counter.toString()).set({
+      await _db.collection('companions').doc(counter.toString()).set({
         'companion_id': counter.toString(),
         'name': name,
         'gender' : gender.toString(),
@@ -231,7 +231,7 @@ class LifeplanDatabase {
 
   Future<bool> addReply(int companionId, String reply) async {
       try {
-        await _db.collection('accounts').doc(companionId.toString()).update({
+        await _db.collection('companions').doc(companionId.toString()).update({
           'replies' : FieldValue.arrayRemove([reply])
         });
         return true;
@@ -240,23 +240,19 @@ class LifeplanDatabase {
       }
   }
 
-  Future<Companion?> readCompanion() async {
-    DocumentSnapshot doc = await FirebaseFirestore.
-    instance
-        .collection('companion')
-        .doc()
-        .get();
-
+  Future<List<Companion>> readCompanion(String type) async {
     try {
-      doc = await _db.collection('companion').doc().get();
+      QuerySnapshot querySnapshot = await _db
+      .collection("companions")
+      .where('gender', isEqualTo: type)
+      .get();
 
-      if (doc.exists) {
-        Companion companion = Companion.fromMap(doc.data() as Map<String, dynamic>);
-        return companion;
-      }
-      return null;
+      List<Companion> companions = querySnapshot.docs.map((doc) {
+        return Companion.fromMap(doc.data() as Map<String, dynamic>);
+      }).toList();
+      return companions;
     } on FirebaseException catch (e) {
-      print('Error: ${e.message}');
+      return [];
     }
   }
 }

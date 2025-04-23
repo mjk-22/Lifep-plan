@@ -2,30 +2,15 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
-void main() {
-  runApp(ThirdPage());
-}
 
-class ThirdPage extends StatelessWidget {
-  const ThirdPage({super.key});
+class HomePage extends StatefulWidget {
+  const HomePage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: LoginPage(),
-    );
-  }
+  State<HomePage> createState() => _HomePageState();
 }
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
-
-  @override
-  State<LoginPage> createState() => _LoginPageState();
-}
-
-class _LoginPageState extends State<LoginPage> {
+class _HomePageState extends State<HomePage> {
   TextEditingController startController = TextEditingController();
   TextEditingController dateController = TextEditingController();
   TextEditingController endController = TextEditingController();
@@ -528,10 +513,10 @@ class _LoginPageState extends State<LoginPage> {
 
   Widget _dropdown(time, void Function(String?) onChanged) {
     return DropdownButton<String>(
-      underline: Container(
-        height: 1,
-        color: Color(0xFFE3FFFF),
-      ),
+        underline: Container(
+          height: 1,
+          color: Color(0xFFE3FFFF),
+        ),
         dropdownColor: Colors.white,
         icon: SizedBox.shrink(),
         borderRadius: BorderRadius.circular(5),
@@ -554,8 +539,8 @@ class _LoginPageState extends State<LoginPage> {
                   Text(
                     selectedTime,
                     style: TextStyle(
-                      fontSize: 15,
-                      fontWeight: FontWeight.bold
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold
                     ),
                   )
                 ],
