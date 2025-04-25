@@ -29,7 +29,6 @@ class _NotificationScreenState extends State<NotificationScreen> {
       drawer: const UserPanel(),
       appBar: AppBar(
         backgroundColor: Colors.transparent,
-        //elevation: 0,
         automaticallyImplyLeading: false,
         actions: [
           Builder(
