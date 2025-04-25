@@ -14,35 +14,42 @@ class LifeplanDatabase {
 
   Future<bool> addAccount(String email, String password) async {
     try {
-      // UserCredential uc = await _auth.createUserWithEmailAndPassword(
-      //     email: email,
-      //     password: password
-      // );
-      //
-      // await uc.user!.sendEmailVerification();
-      //
-      // await _db.collection('accounts').doc(uc.user!.uid).set({
-      //   'email': email,
-      //   'username': "User",
-      //   'companion': null,
-      //   'is_notification_on' : false,
-      //   'events': []
-      // });
-      //
-      // _currentUser = FirebaseAuth.instance.currentUser;
-     await _db.collection('accounts').add({
-      'email': email,
-      'username': "User",
-      'companion': null,
-      'is_notification_on' : false,
-      'events': []
-    });
+      UserCredential uc = await _auth.createUserWithEmailAndPassword(
+          email: email,
+          password: password
+      );
+
+      //await uc.user!.sendEmailVerification();
+
+      await _db.collection('accounts').doc(uc.user!.uid).set({
+        'email': email,
+        'username': "User",
+        'companion': null,
+        'is_notification_on' : false,
+        'events': []
+      });
+
+      _currentUser = FirebaseAuth.instance.currentUser;
       return true;
     } on Exception catch (e) {
       return false;
     }
   }
 
+  Future<bool> login(String email, String password) async {
+    try {
+      UserCredential uc = await _auth.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+
+      _currentUser = uc.user;
+      return true;
+    } catch (e) {
+      print('Error: $e');
+      return false;
+    }
+  }
 
 
   Future<bool> addEvent(Event event) async {
@@ -211,7 +218,7 @@ class LifeplanDatabase {
     }
   }
 
-  // ### Companion CRUD functions ###
+  // Companion CRUD functions
   Future<bool> addCompanion(String name, String gender, List<String> replies, String image) async {
     counter++;
     try {

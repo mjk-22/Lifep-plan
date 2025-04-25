@@ -1,17 +1,4 @@
 import 'package:flutter/material.dart';
-import 'userPanel.dart';
-
-void main() => runApp(NotificationApp());
-
-class NotificationApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: NotificationScreen(),
-      debugShowCheckedModeBanner: false,
-    );
-  }
-}
 
 class NotificationScreen extends StatefulWidget {
   @override
@@ -26,9 +13,9 @@ class _NotificationScreenState extends State<NotificationScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFEAF2F5),
-      drawer: const UserPanel(),
       appBar: AppBar(
         backgroundColor: Colors.transparent,
+        //elevation: 0,
         automaticallyImplyLeading: false,
         actions: [
           Builder(
@@ -97,19 +84,6 @@ class _NotificationScreenState extends State<NotificationScreen> {
             ),
           ],
         ),
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        selectedItemColor: Colors.grey,
-        unselectedItemColor: Colors.grey,
-
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.calendar_today), label: "Schedules"),
-          BottomNavigationBarItem(icon: Icon(Icons.wb_sunny), label: "Timer"),
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
-          BottomNavigationBarItem(icon: Icon(Icons.people), label: "Companion"),
-          BottomNavigationBarItem(icon: Icon(Icons.calendar_view_day), label: "Planner"),
-        ],
       ),
     );
   }

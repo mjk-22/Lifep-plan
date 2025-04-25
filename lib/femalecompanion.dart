@@ -42,7 +42,7 @@ class _FemaleCompanionState extends State<FemaleCompanion> {
                 return Center(child: Text("Error occured while loading!: ${snapshot.error}"),);
               }
 
-              final companions= snapshot.data!;
+              final companions = snapshot.data!;
               print(companions.length);
               return Center(
                 child: Column(
@@ -91,7 +91,7 @@ class _FemaleCompanionState extends State<FemaleCompanion> {
                       ),
                     ),
                     SizedBox(height: 40,),
-                    _button("Next", Colors.black, Colors.white, () {})
+                    _button("Next", Colors.black, Colors.white, () {Navigator.pushNamed(context,'/home');})
                   ],
                 ),);
             }

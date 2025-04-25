@@ -91,7 +91,7 @@ class _MaleCompanionState extends State<MaleCompanion> {
                   ),
               ),
                   SizedBox(height: 40,),
-                  _button("Next", Colors.black, Colors.white, () {})
+                  _button("Next", Colors.black, Colors.white, () {Navigator.pushNamed(context,'/home');})
               ],
             ),);
           }
