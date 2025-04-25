@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:lifeplan/worldclock.dart';
+import 'package:lifeplan/navPages/worldclock.dart';
 
 import 'companion.dart';
 

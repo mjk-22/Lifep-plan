@@ -1,21 +1,5 @@
 import 'package:flutter/material.dart';
 
-void main() {
-  runApp(ThirdPage());
-}
-
-class ThirdPage extends StatelessWidget {
-  const ThirdPage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: LoginPage(),
-    );
-  }
-}
-
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
 
@@ -56,9 +40,9 @@ class _LoginPageState extends State<LoginPage> {
                     ],
                   ),
                   SizedBox(height: 40,),
-                  _button("Sign in", Colors.black, Color(0xFFEEFFFF),),
+                  _button("Sign in", Colors.black, Color(0xFFEEFFFF), () {}),
                   SizedBox(height: 20,),
-                  _button("Create new Account",Color(0xFFEEFFFF), Colors.black)
+                  _button("Create new Account",Color(0xFFEEFFFF), Colors.black, () {Navigator.pushNamed(context, '/createaccount');})
                 ],
               ),
             ),
@@ -113,7 +97,7 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  Widget _button(message, buttonColor, textColor) {
+  Widget _button(message, buttonColor, textColor, void Function() action) {
     return Container(
       height: 40,
       width: 250,
@@ -133,7 +117,7 @@ class _LoginPageState extends State<LoginPage> {
           backgroundColor: buttonColor,
             elevation: 0
         ),
-          onPressed: () {},
+          onPressed: action,
           child: Text(message, style: TextStyle(color: textColor, fontSize: 17),)
       ),
     );

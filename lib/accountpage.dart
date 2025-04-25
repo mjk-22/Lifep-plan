@@ -1,21 +1,5 @@
 import 'package:flutter/material.dart';
 
-void main() {
-  runApp(SecondScreen());
-}
-
-class SecondScreen extends StatelessWidget {
-  const SecondScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: AccountPage(),
-    );
-  }
-}
-
 class AccountPage extends StatefulWidget {
   const AccountPage({super.key});
 
@@ -69,7 +53,9 @@ class _AccountPageState extends State<AccountPage> {
 
                         ),
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.pushNamed(context, '/login');
+                      },
                       child: Text("Login", style: TextStyle(color: Colors.white, fontSize: 20),)
                   ),
                 ),
@@ -95,7 +81,9 @@ class _AccountPageState extends State<AccountPage> {
 
                         ),
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.pushNamed(context, '/createaccount');
+                      },
                       child: Text("Register", style: TextStyle(color: Colors.black, fontSize: 20),)
                   ),
                 ),

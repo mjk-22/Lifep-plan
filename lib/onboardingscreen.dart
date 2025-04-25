@@ -1,22 +1,6 @@
 import 'package:flutter/material.dart';
 import 'startscreen.dart';
 
-void main() {
-  runApp(const MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: OnboardingScreen(),
-      debugShowCheckedModeBanner: false,
-    );
-  }
-}
-
 class OnboardingScreen extends StatefulWidget {
   @override
   _OnboardingScreenState createState() => _OnboardingScreenState();

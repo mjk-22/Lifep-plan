@@ -1,32 +1,65 @@
 import 'package:flutter/material.dart';
+import 'package:lifeplan/validateInput/Validation.dart';
+import 'package:lifeplan/db/dbsetup.dart';
 
-void main() {
-  runApp(ThirdPage());
-}
 
-class ThirdPage extends StatelessWidget {
-  const ThirdPage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: LoginPage(),
-    );
-  }
-}
-
-class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+class CreateAccount extends StatefulWidget {
+  const CreateAccount({super.key});
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<CreateAccount> createState() => _CreateAccountState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _CreateAccountState extends State<CreateAccount> {
+  LifeplanDatabase db = new LifeplanDatabase();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController confirmController = TextEditingController();
+  String success = '';
+  Color successColor = Colors.black;
+
+  bool validInput(){
+    return (emailController.text.isNotEmpty &&
+        passwordController.text.isNotEmpty && confirmController.text.isNotEmpty);
+  }
+
+  Future<void>? inputSuccess() async{
+    if (!validInput()) {
+      setState(() {
+        success = 'Please fill all fields!';
+        successColor = Colors.red;
+      });
+      return;
+    }
+
+    if (!Validation.validPasswordLength(passwordController.text)) {
+      setState(() {
+        success = 'Password needs to contain minimum 12 characters!';
+        successColor = Colors.red;
+      });
+      return;
+    }
+
+    if (!Validation.validConfirmPassword(passwordController.text, confirmController.text)) {
+      setState(() {
+        success = 'Passwords do not match!';
+        successColor = Colors.red;
+      });
+      return;
+    }
+
+    bool added = await db.addAccount(emailController.text, passwordController.text);
+    setState(() {
+      if (added) {
+        success = 'Account Created!';
+        successColor = Colors.green;
+      } else {
+        success = 'Failed to create account.';
+        successColor = Colors.red;
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -60,10 +93,12 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                     ],
                   ),
-                  SizedBox(height: 40,),
-                  _button("Sign Up", Colors.black, Color(0xFFEEFFFF), 17.0),
+                  SizedBox(height: 15,),
+                  Text(success, style: TextStyle(color: successColor, fontWeight: FontWeight.w500), textAlign: TextAlign.center,),
                   SizedBox(height: 20,),
-                  _button("Already have an account?",Color(0xFFEEFFFF), Colors.black, 13.0),
+                  _button("Sign Up", Colors.black, Color(0xFFEEFFFF), 17.0, inputSuccess),
+                  SizedBox(height: 20,),
+                  _button("Already have an account?",Color(0xFFEEFFFF), Colors.black, 13.0, () {Navigator.pushNamed(context, '/login');})
                 ],
               ),
             ),
@@ -119,7 +154,7 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  Widget _button(message, buttonColor, textColor, textSize) {
+  Widget _button(message, buttonColor, textColor, textSize, void Function() function) {
     return Container(
       height: 40,
       width: 250,
@@ -139,12 +174,13 @@ class _LoginPageState extends State<LoginPage> {
               backgroundColor: buttonColor,
               elevation: 0
           ),
-          onPressed: () {},
+          onPressed: function,
           child: Text(message, style: TextStyle(color: textColor, fontSize: textSize),)
       ),
     );
   }
 
 }
+
 
 
