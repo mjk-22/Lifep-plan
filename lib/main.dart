@@ -17,6 +17,7 @@ import 'navPages/timer.dart';
 import 'navPages/planner.dart';
 import 'navPages/companion.dart';
 import 'viewuseraccount.dart';
+import 'adduserpage.dart';
 
 Future<void> main() async{
   WidgetsFlutterBinding.ensureInitialized();
@@ -38,7 +39,7 @@ class MyPlanner extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       routes: {
-        '/' : (context) => NavPage(),
+        '/' : (context) => CompanionGender(),
         '/home' : (context) => NavPage(),
         '/login' : (context) => LoginPage(),
         '/createaccount' : (context) => CreateAccount(),
@@ -50,7 +51,8 @@ class MyPlanner extends StatelessWidget {
         '/timer' : (context) => TimerScreen(),
         '/planner' : (context) => PlannerPage(),
         '/companion' : (context) => CompanionPage(),
-        '/viewaccount' : (context) => ViewAccount()
+        '/viewaccount' : (context) => ViewAccount(),
+        '/adduser' : (context) => AddUserScreen()
       },
     );
   }

@@ -203,6 +203,9 @@ class _SchedulesPageState extends State<SchedulesPage> {
           Container(
             height: 50,
             child: ListTile(
+              onTap: () {
+                Navigator.pushNamed(context, '/adduser');
+              },
               leading: Icon(
                 Icons.person_add_alt_1,
                 color: Colors.blueGrey,

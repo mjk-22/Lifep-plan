@@ -351,6 +351,9 @@ class _ClockPageState extends State<ClockPage> {
           Container(
             height: 50,
             child: ListTile(
+              onTap: () {
+                Navigator.pushNamed(context, '/adduser');
+              },
               leading: Icon(
                 Icons.person_add_alt_1,
                 color: Colors.blueGrey,

@@ -1,19 +1,5 @@
 import 'package:flutter/material.dart';
 
-void main() => runApp(const MyApp());
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: AddUserScreen(),
-    );
-  }
-}
-
 class AddUserScreen extends StatelessWidget {
   const AddUserScreen({super.key});
 
@@ -27,7 +13,8 @@ class AddUserScreen extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(right: 10, top: 10),
             child: IconButton(
-              icon: const Icon(Icons.chevron_left, color: Colors.black, size: 30),
+              icon: const Icon(
+                  Icons.chevron_left, color: Colors.black, size: 30),
               onPressed: () => Navigator.pop(context),
             ),
           ),
@@ -79,18 +66,21 @@ class AddUserScreen extends StatelessWidget {
           ],
         ),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        selectedItemColor: Colors.grey,
-        unselectedItemColor: Colors.grey,
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.calendar_today), label: "Schedules"),
-          BottomNavigationBarItem(icon: Icon(Icons.wb_sunny), label: "Timer"),
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
-          BottomNavigationBarItem(icon: Icon(Icons.people), label: "Companion"),
-          BottomNavigationBarItem(icon: Icon(Icons.calendar_view_day), label: "Planner"),
-        ],
-      ),
+      //might delete
+      // bottomNavigationBar: BottomNavigationBar(
+      //   type: BottomNavigationBarType.fixed,
+      //   selectedItemColor: Colors.grey,
+      //   unselectedItemColor: Colors.grey,
+      //   items: const [
+      //     BottomNavigationBarItem(icon: Icon(Icons.calendar_today), label: "Schedules"),
+      //     BottomNavigationBarItem(icon: Icon(Icons.wb_sunny), label: "Timer"),
+      //     BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
+      //     BottomNavigationBarItem(icon: Icon(Icons.people), label: "Companion"),
+      //     BottomNavigationBarItem(icon: Icon(Icons.calendar_view_day), label: "Planner"),
+      //   ],
+      // ),
     );
   }
+
+
 }
