@@ -4,6 +4,8 @@ import 'package:lifeplan/navPages/worldclock.dart';
 class ShopCompanionPage extends StatelessWidget {
   const ShopCompanionPage({super.key});
 
+
+
   void _showConfirmationDialog(BuildContext context, String itemName) {
     showDialog(
       context: context,
@@ -113,6 +115,8 @@ class ShopCompanionPage extends StatelessWidget {
     );
   }
 
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -199,37 +203,49 @@ class ShopCompanionPage extends StatelessWidget {
         ],
       ),
       // Bottom Navigation Bar
-      bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        selectedItemColor: Colors.black,
-        unselectedItemColor: Colors.grey,
-        currentIndex: 3, // Companion tab selected
-        onTap: (index) {
-          if (index == 0) {
-            // TODO: Replace with actual SchedulesPage()
-          } else if (index == 1) {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => ClockApp()),
-            );
-          } else if (index == 2) {
-            // TODO: Replace with HomePage()
-          } else if (index == 3) {
-            // Already on CompanionPage
-          } else if (index == 4) {
-            // TODO: Replace with PlannerPage()
-          }
-        },
-        items: const [
-          BottomNavigationBarItem(
-              icon: Icon(Icons.calendar_today), label: "Schedules"),
-          BottomNavigationBarItem(icon: Icon(Icons.wb_sunny), label: "Timer"),
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
-          BottomNavigationBarItem(icon: Icon(Icons.people), label: "Companion"),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.calendar_view_day), label: "Planner"),
-        ],
-      ),
+      bottomNavigationBar: bottomNav(context, 4)
     );
+  }
+
+  Widget bottomNav(BuildContext context, index) {
+    List<String> navPages = [
+      '/schedules',
+      '/timer',
+      '/home',
+      '/planner',
+      '/companion'
+    ];
+
+    return BottomNavigationBar(
+        backgroundColor: Color(0xFFE3FFFF),
+        type: BottomNavigationBarType.fixed,
+        selectedItemColor: Color(0xFF356A6B),
+        unselectedItemColor: Colors.grey,
+        onTap: (index) {
+          Navigator.pushNamed(context, navPages[index]);
+        },
+        currentIndex: index,
+        items: <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.calendar_month_outlined),
+            label: "Schedules",
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.timer_outlined),
+            label: "Timer",
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home_filled),
+            label: "Home",
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.my_library_books_rounded),
+            label: "Planner",
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person_pin_circle_rounded),
+            label: "Companion",
+          ),
+        ]);
   }
 }

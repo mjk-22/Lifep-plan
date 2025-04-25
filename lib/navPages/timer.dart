@@ -57,6 +57,22 @@ class _TimerScreenState extends State<TimerScreen> {
     });
   }
 
+
+  
+  List<String> navPages = [
+    '/schedules',
+    '/timer',
+    '/home',
+    '/planner',
+    '/companion'
+  ];
+  int currentIndex = 1;
+  void _tappedItem(int index) {
+    setState(() {
+      currentIndex = index;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     // Keep everything else the same...
@@ -167,41 +183,7 @@ class _TimerScreenState extends State<TimerScreen> {
           ],
         ),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        selectedItemColor: Colors.black,
-        unselectedItemColor: Colors.grey,
-        currentIndex: 1, // timer index
-        onTap: (index) {
-          switch (index) {
-            case 0:
-            // Navigator.push(context, MaterialPageRoute(builder: (_) => SchedulesPage()));
-              break;
-            case 1:
-            // Navigator.push(context, MaterialPageRoute(builder: (_) => TimerPage()));
-              break;
-            case 2:
-            // Navigator.push(context, MaterialPageRoute(builder: (_) => HomePage()));
-              break;
-            case 3:
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (_) => const CompanionPage()),
-              );
-              break;
-            case 4:
-            // Navigator.push(context, MaterialPageRoute(builder: (_) => PlannerPage()));
-              break;
-          }
-        },
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.calendar_today), label: "Schedules"),
-          BottomNavigationBarItem(icon: Icon(Icons.wb_sunny), label: "Timer"),
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
-          BottomNavigationBarItem(icon: Icon(Icons.people), label: "Companion"),
-          BottomNavigationBarItem(icon: Icon(Icons.calendar_view_day), label: "Planner"),
-        ],
-      ),
+      bottomNavigationBar: bottomNav(currentIndex)
 
     );
   }
@@ -212,5 +194,40 @@ class _TimerScreenState extends State<TimerScreen> {
     final m = twoDigits(d.inMinutes.remainder(60));
     final s = twoDigits(d.inSeconds.remainder(60));
     return "$h:$m:$s";
+  }
+
+  Widget bottomNav(index) {
+    return BottomNavigationBar(
+        backgroundColor: Color(0xFFE3FFFF),
+        type: BottomNavigationBarType.fixed,
+        selectedItemColor: Color(0xFF356A6B),
+        unselectedItemColor: Colors.grey,
+        onTap: (index) {
+          _tappedItem(index);
+          Navigator.pushNamed(context, navPages[currentIndex]);
+        },
+        currentIndex: index,
+        items: <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.calendar_month_outlined),
+            label: "Schedules",
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.timer_outlined),
+            label: "Timer",
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home_filled),
+            label: "Home",
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.my_library_books_rounded),
+            label: "Planner",
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person_pin_circle_rounded),
+            label: "Companion",
+          ),
+        ]);
   }
 }

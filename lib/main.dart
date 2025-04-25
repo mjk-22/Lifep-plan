@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:lifeplan/loginpage.dart';
 import 'package:lifeplan/createaccount.dart';
+import 'package:lifeplan/onboardingscreen.dart';
 import 'accountpage.dart';
 import 'companiongender.dart';
 import 'femalecompanion.dart';
@@ -15,6 +16,7 @@ import 'navPages/schedules.dart';
 import 'navPages/timer.dart';
 import 'navPages/planner.dart';
 import 'navPages/companion.dart';
+import 'viewuseraccount.dart';
 
 Future<void> main() async{
   WidgetsFlutterBinding.ensureInitialized();
@@ -37,7 +39,7 @@ class MyPlanner extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       routes: {
         '/' : (context) => NavPage(),
-        '/home' : (context) => HomePage(),
+        '/home' : (context) => NavPage(),
         '/login' : (context) => LoginPage(),
         '/createaccount' : (context) => CreateAccount(),
         '/startjourney' : (context) => AccountPage(),
@@ -47,7 +49,8 @@ class MyPlanner extends StatelessWidget {
         '/schedules' : (context) => SchedulesPage(),
         '/timer' : (context) => TimerScreen(),
         '/planner' : (context) => PlannerPage(),
-        '/companion' : (context) => CompanionPage()
+        '/companion' : (context) => CompanionPage(),
+        '/viewaccount' : (context) => ViewAccount()
       },
     );
   }
