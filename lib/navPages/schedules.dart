@@ -50,8 +50,11 @@ class _SchedulesPageState extends State<SchedulesPage> {
                 },
               );
             },
-          )
+          ),
+        title: Text("Previous Events"),
+        centerTitle: true,
       ),
+      drawer: drawer(),
       bottomNavigationBar: bottomNav(currentIndex),
       backgroundColor: Color(0xFFDCF0F0),
       body: GridView.count(
@@ -60,13 +63,19 @@ class _SchedulesPageState extends State<SchedulesPage> {
         // this produces 2 rows.
         crossAxisCount: 2,
         // Generate 100 widgets that display their index in the list.
-        children: List.generate(16, (index) {
+        children: List.generate(10, (index) {
           return Center(
             child: Container(
-              color: Colors.blueGrey,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                color: Colors.blueGrey,
+              ),
                 width: 200,
               height: 200,
               margin: EdgeInsets.all(10),
+              child: Center(
+                child: Text("2019-2020", style: TextStyle(fontWeight: FontWeight.w400, fontSize: 30, color: Colors.white),),
+              ),
             ),
           );
         }),
@@ -161,6 +170,9 @@ class _SchedulesPageState extends State<SchedulesPage> {
           Container(
             height: 50,
             child: ListTile(
+              onTap: () {
+                Navigator.pushNamed(context, '/home');
+              },
               leading: Icon(
                 Icons.home_outlined,
                 color: Colors.blueGrey,
@@ -175,6 +187,9 @@ class _SchedulesPageState extends State<SchedulesPage> {
           Container(
             height: 50,
             child: ListTile(
+              onTap: () {
+                Navigator.pushNamed(context, '/notification');
+              },
               leading: Icon(
                 Icons.notifications_active,
                 color: Colors.blueGrey,
@@ -203,12 +218,16 @@ class _SchedulesPageState extends State<SchedulesPage> {
           Container(
             height: 50,
             child: ListTile(
+              onTap: () {
+                Navigator.pushNamed(context, '/adduser');
+              },
               leading: Icon(
                 Icons.person_add_alt_1,
                 color: Colors.blueGrey,
                 size: 25,
               ),
               title: Text(
+
                 "Add user",
                 style: TextStyle(color: Colors.blueGrey),
               ),
@@ -247,6 +266,9 @@ class _SchedulesPageState extends State<SchedulesPage> {
           Container(
             height: 50,
             child: ListTile(
+              onTap: () {
+                Navigator.pushNamed(context, '/shop');
+              },
               leading: Icon(
                 Icons.shopping_bag_outlined,
                 color: Colors.blueGrey,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lifeplan/db/dbsetup.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -10,6 +11,9 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  LifeplanDatabase db = LifeplanDatabase();
+  String success = "";
+  Color successColor = Colors.black;
 
   @override
   Widget build(BuildContext context) {
@@ -39,10 +43,30 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                     ],
                   ),
+                  SizedBox(height: 15),
+                  Text(success),
                   SizedBox(height: 40,),
-                  _button("Sign in", Colors.black, Color(0xFFEEFFFF), () {}),
+                  _button("Sign in", Colors.black, Color(0xFFEEFFFF), () async {
+                    bool loggedIn = await db.login(emailController.text, passwordController.text);
+                    if (!loggedIn) {
+                      setState(() {
+                        success = 'Wrong credentials!';
+                        successColor = Colors.red;
+                      });
+                    } else {
+                      // you can navigate somewhere or show success
+                      Navigator.pushNamed(context, '/home');
+                    }
+                  }),
                   SizedBox(height: 20,),
-                  _button("Create new Account",Color(0xFFEEFFFF), Colors.black, () {Navigator.pushNamed(context, '/createaccount');})
+                  _button(
+                    "Create new Account",
+                    Color(0xFFEEFFFF),
+                    Colors.black,
+                        () async {
+                      Navigator.pushNamed(context, '/createaccount');
+                    },
+                  )
                 ],
               ),
             ),
@@ -97,7 +121,7 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  Widget _button(message, buttonColor, textColor, void Function() action) {
+  Widget _button(message, buttonColor, textColor, Future<void> Function() action) {
     return Container(
       height: 40,
       width: 250,
@@ -117,7 +141,9 @@ class _LoginPageState extends State<LoginPage> {
           backgroundColor: buttonColor,
             elevation: 0
         ),
-          onPressed: action,
+          onPressed: () async {
+            await action();
+          },
           child: Text(message, style: TextStyle(color: textColor, fontSize: 17),)
       ),
     );

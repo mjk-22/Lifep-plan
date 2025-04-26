@@ -1,33 +1,19 @@
 import 'package:flutter/material.dart';
 
-class PlannerPage extends StatefulWidget {
-  const PlannerPage({super.key});
+class AddUserScreen extends StatefulWidget {
+  const AddUserScreen({super.key});
 
   @override
-  State<PlannerPage> createState() => _PlannerPageState();
+  State<AddUserScreen> createState() => _AddUserScreenState();
 }
 
-class _PlannerPageState extends State<PlannerPage> {
-  List<String> navPages = [
-    '/schedules',
-    '/timer',
-    '/home',
-    '/planner',
-    '/companion'
-  ];
-
-  int currentIndex = 3;
-  String? selectedStart;
-  String? selectedEnd;
-
-  void _tappedItem(int index) {
-    setState(() {
-      currentIndex = index;
-    });
-  }
+class _AddUserScreenState extends State<AddUserScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+
+      drawer: drawer(),
+      backgroundColor: const Color(0xFFEAF2F5),
       appBar: AppBar(
           backgroundColor: Color(0xFFDCF0F0),
           bottom: PreferredSize(
@@ -50,90 +36,58 @@ class _PlannerPageState extends State<PlannerPage> {
                 },
               );
             },
-          ),
-        title: Text("Your Current Events"),
-        centerTitle: true,
+          )
       ),
-      drawer: drawer(),
-      bottomNavigationBar: bottomNav(currentIndex),
-      backgroundColor: Color(0xFFDCF0F0),
-      body: GridView.count(
-        crossAxisCount: 1,
-        children: List.generate(6, (index) {
-          return Padding(
-            padding: const EdgeInsets.symmetric(vertical: 80, horizontal: 20),
-            child: Container(
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20),
 
-              decoration: BoxDecoration(
-                color: Colors.blueGrey,
-                borderRadius: BorderRadius.circular(10),
-              ),
-              padding: const EdgeInsets.all(12.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text("Date: 04/20/2025", style: TextStyle(fontWeight: FontWeight.w300, fontSize: 20, color: Colors.white)),
-                  Text("Start Time: 08:30 AM", style: TextStyle(fontWeight: FontWeight.w300, fontSize: 20, color: Colors.white)),
-                  Text("End Time: 10:00 AM", style: TextStyle(fontWeight: FontWeight.w300, fontSize: 20, color: Colors.white)),
-                  Text("Location: Home", style: TextStyle(fontWeight: FontWeight.w300, fontSize: 20, color: Colors.white)),
-                  Text("Description: Study for Math", style: TextStyle(fontWeight: FontWeight.w300, fontSize: 20, color: Colors.white)),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      IconButton(
-                        onPressed: () {},
-                        icon: Icon(Icons.edit_calendar_outlined, color: Colors.white),
-                      ),
-                      IconButton(
-                        onPressed: () {},
-                        icon: Icon(Icons.delete, color: Colors.white),
-                      ),
-                    ],
-                  )
-                ],
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(height: 30,),
+            const Text(
+              "Add a user",
+              style: TextStyle(
+                fontSize: 22,
+                fontWeight: FontWeight.bold,
               ),
             ),
-          );
-        }),
+            const SizedBox(height: 4),
+            const Text(
+              "Enter account email . . .",
+              style: TextStyle(fontSize: 14, color: Colors.black),
+            ),
+            const SizedBox(height: 20),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: const TextField(
+                decoration: InputDecoration(
+                  hintText: 'Search',
+                  border: InputBorder.none,
+                  icon: Icon(Icons.search),
+                ),
+              ),
+            ),
+            const SizedBox(height: 10),
+            const Divider(thickness: 1),
+            const Spacer(),
+            const Center(
+              child: Text(
+                "No more results",
+                style: TextStyle(color: Colors.grey),
+              ),
+            ),
+            const SizedBox(height: 30),
+          ],
+        ),
       ),
-
     );
   }
 
-  Widget bottomNav(index) {
-    return BottomNavigationBar(
-        backgroundColor: Color(0xFFE3FFFF),
-        type: BottomNavigationBarType.fixed,
-        selectedItemColor: Color(0xFF356A6B),
-        unselectedItemColor: Colors.grey,
-        onTap: (index) {
-          _tappedItem(index);
-          Navigator.pushNamed(context, navPages[currentIndex]);
-        },
-        currentIndex: index,
-        items: <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.calendar_month_outlined),
-            label: "Schedules",
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.timer_outlined),
-            label: "Timer",
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home_filled),
-            label: "Home",
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.my_library_books_rounded),
-            label: "Planner",
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person_pin_circle_rounded),
-            label: "Companion",
-          ),
-        ]);
-  }
 
   Widget drawer() {
     return Drawer(
@@ -244,7 +198,6 @@ class _PlannerPageState extends State<PlannerPage> {
                 size: 25,
               ),
               title: Text(
-
                 "Add user",
                 style: TextStyle(color: Colors.blueGrey),
               ),
@@ -316,3 +269,5 @@ class _PlannerPageState extends State<PlannerPage> {
     );
   }
 }
+
+

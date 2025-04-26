@@ -51,10 +51,10 @@ class _CreateAccountState extends State<CreateAccount> {
     bool added = await db.addAccount(emailController.text, passwordController.text);
     setState(() {
       if (added) {
-        success = 'Account Created!';
-        successColor = Colors.green;
+        success = 'Wrong input format!';
+        Navigator.pushNamed(context, '/companiongender');
       } else {
-        success = 'Failed to create account.';
+        success = 'Wrong input format!';
         successColor = Colors.red;
       }
     });
@@ -117,7 +117,6 @@ class _CreateAccountState extends State<CreateAccount> {
                 child: Image.asset("assets/google.png", width: 10, height: 10,),
               ),
             ),
-
           ],
         ),
       ),

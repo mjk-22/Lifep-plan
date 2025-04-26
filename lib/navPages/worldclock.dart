@@ -295,6 +295,9 @@ class _ClockPageState extends State<ClockPage> {
           Container(
             height: 50,
             child: ListTile(
+              onTap: () {
+                Navigator.pushNamed(context, '/viewaccount');
+              },
               leading: Icon(
                 Icons.account_circle_rounded,
                 color: Colors.blueGrey,
@@ -309,6 +312,9 @@ class _ClockPageState extends State<ClockPage> {
           Container(
             height: 50,
             child: ListTile(
+              onTap: () {
+                Navigator.pushNamed(context, '/home');
+              },
               leading: Icon(
                 Icons.home_outlined,
                 color: Colors.blueGrey,
@@ -323,6 +329,9 @@ class _ClockPageState extends State<ClockPage> {
           Container(
             height: 50,
             child: ListTile(
+              onTap: () {
+                Navigator.pushNamed(context, '/notification');
+              },
               leading: Icon(
                 Icons.notifications_active,
                 color: Colors.blueGrey,
@@ -351,12 +360,16 @@ class _ClockPageState extends State<ClockPage> {
           Container(
             height: 50,
             child: ListTile(
+              onTap: () {
+                Navigator.pushNamed(context, '/adduser');
+              },
               leading: Icon(
                 Icons.person_add_alt_1,
                 color: Colors.blueGrey,
                 size: 25,
               ),
               title: Text(
+
                 "Add user",
                 style: TextStyle(color: Colors.blueGrey),
               ),
@@ -395,6 +408,9 @@ class _ClockPageState extends State<ClockPage> {
           Container(
             height: 50,
             child: ListTile(
+              onTap: () {
+                Navigator.pushNamed(context, '/shop');
+              },
               leading: Icon(
                 Icons.shopping_bag_outlined,
                 color: Colors.blueGrey,

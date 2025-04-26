@@ -47,188 +47,217 @@ class _ViewAccountState extends State<ViewAccount> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.account_circle_rounded, color: Colors.blueGrey, size: 100,),
-            Text("USER123",style: TextStyle(fontSize: 25),),
+            Text("Your Account", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30, color: Colors.blueGrey),),
+            Icon(Icons.account_circle_rounded, color: Colors.blueGrey, size: 130,),
+            Text("USER123",style: TextStyle(fontSize: 25, color: Colors.black),),
 SizedBox(height: 30,),
             Container(
-              color: Colors.white,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(9),
+                color: Colors.white60,
+              ),
               padding: EdgeInsets.all(10),
               width: 300,
-              height: 350,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text("Email Address"),
-                      SizedBox(
-                        height: 30,
-                        width: 150,
-                        child: TextFormField(
-                          controller: emailController,
-                          cursorColor: Colors.black,
-                          keyboardType: TextInputType.number,
-                          decoration: InputDecoration(
-                            labelText: "email",
-                            labelStyle: TextStyle(color: Colors.black),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.transparent),
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.grey),
-                            ),
+              height: 400,
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SizedBox(height: 40,),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text("Email Address"),
+                        SizedBox(
+                          height: 30,
+                          width: 150,
+                          child: TextFormField(
+                            controller: emailController,
+                            cursorColor: Colors.black,
+                            keyboardType: TextInputType.number,
+                            decoration: InputDecoration(
+                              labelText: "email",
+                              labelStyle: TextStyle(color: Colors.black),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(color: Colors.transparent),
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(color: Colors.grey),
+                              ),
 
+                            ),
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 25,),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text("username"),
-                      SizedBox(
-                        height: 30,
-                        width: 150,
-                        child: TextFormField(
-                          controller: emailController,
-                          cursorColor: Colors.black,
-                          keyboardType: TextInputType.number,
-                          decoration: InputDecoration(
-                            labelText: "username",
-                            labelStyle: TextStyle(color: Colors.black),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.transparent),
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.grey),
-                            ),
+                      ],
+                    ),
+                    SizedBox(height: 40,),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text("username"),
+                        SizedBox(
+                          height: 30,
+                          width: 150,
+                          child: TextFormField(
+                            controller: emailController,
+                            cursorColor: Colors.black,
+                            keyboardType: TextInputType.number,
+                            decoration: InputDecoration(
+                              labelText: "username",
+                              labelStyle: TextStyle(color: Colors.black),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(color: Colors.transparent),
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(color: Colors.grey),
+                              ),
 
+                            ),
                           ),
                         ),
-                      ),
-                    ],
-                  )
-                  ,
-                  SizedBox(height: 25,),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text("Password"),
-                      SizedBox(
-                        height: 30,
-                        width: 150,
-                        child: TextFormField(
-                          controller: emailController,
-                          cursorColor: Colors.black,
-                          keyboardType: TextInputType.number,
-                          decoration: InputDecoration(
-                            labelText: "password",
-                            labelStyle: TextStyle(color: Colors.black),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.transparent),
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.grey),
-                            ),
+                      ],
+                    )
+                    ,
+                    SizedBox(height: 40,),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text("Password"),
+                        SizedBox(
+                          height: 30,
+                          width: 150,
+                          child: TextFormField(
+                            controller: emailController,
+                            cursorColor: Colors.black,
+                            keyboardType: TextInputType.number,
+                            decoration: InputDecoration(
+                              labelText: "password",
+                              labelStyle: TextStyle(color: Colors.black),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(color: Colors.transparent),
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(color: Colors.grey),
+                              ),
 
+                            ),
                           ),
                         ),
-                      ),
-                    ],
-                  )
-                  ,
-                  SizedBox(height: 25,),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text("Notifications"),
-                      SizedBox(
-                        height: 30,
-                        width: 150,
-                        child: TextFormField(
-                          controller: emailController,
-                          cursorColor: Colors.black,
-                          keyboardType: TextInputType.number,
-                          decoration: InputDecoration(
-                            labelText: "Notification On",
-                            labelStyle: TextStyle(color: Colors.black),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.transparent),
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.grey),
-                            ),
+                      ],
+                    )
+                    ,
+                    SizedBox(height: 40,),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text("Notifications"),
+                        SizedBox(
+                          height: 30,
+                          width: 150,
+                          child: TextFormField(
+                            controller: emailController,
+                            cursorColor: Colors.black,
+                            keyboardType: TextInputType.number,
+                            decoration: InputDecoration(
+                              labelText: "Notification On",
+                              labelStyle: TextStyle(color: Colors.black),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(color: Colors.transparent),
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(color: Colors.grey),
+                              ),
 
+                            ),
                           ),
                         ),
-                      ),
-                    ],
-                  )
-                  ,
-                  SizedBox(height: 25,),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text("Current Points"),
-                      SizedBox(
-                        height: 30,
-                        width: 150,
-                        child: TextFormField(
-                          controller: emailController,
-                          cursorColor: Colors.black,
-                          keyboardType: TextInputType.number,
-                          decoration: InputDecoration(
-                            labelText: "360 points",
-                            labelStyle: TextStyle(color: Colors.black),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.transparent),
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.grey),
-                            ),
+                      ],
+                    )
+                    ,
+                    SizedBox(height: 40,),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text("Current Points"),
+                        SizedBox(
+                          height: 30,
+                          width: 150,
+                          child: TextFormField(
+                            controller: emailController,
+                            cursorColor: Colors.black,
+                            keyboardType: TextInputType.number,
+                            decoration: InputDecoration(
+                              labelText: "360 points",
+                              labelStyle: TextStyle(color: Colors.black),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(color: Colors.transparent),
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(color: Colors.grey),
+                              ),
 
+                            ),
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 25,),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text("Current Companion"),
-                      SizedBox(
-                        height: 30,
-                        width: 150,
-                        child: TextFormField(
-                          controller: emailController,
-                          cursorColor: Colors.black,
-                          keyboardType: TextInputType.number,
-                          decoration: InputDecoration(
-                            labelText: "Alissa John",
-                            labelStyle: TextStyle(color: Colors.black),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.transparent),
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.grey),
-                            ),
+                      ],
+                    ),
+                    SizedBox(height: 40,),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text("Current Companion"),
+                        SizedBox(
+                          height: 30,
+                          width: 150,
+                          child: TextFormField(
+                            controller: emailController,
+                            cursorColor: Colors.black,
+                            keyboardType: TextInputType.number,
+                            decoration: InputDecoration(
+                              labelText: "Alissa John",
+                              labelStyle: TextStyle(color: Colors.black),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(color: Colors.transparent),
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(color: Colors.grey),
+                              ),
 
+                            ),
                           ),
                         ),
-                      ),
-                    ],
-                  ),
+                      ],
+                    ),
 
-                ],
+                  ],
 
-              ),
+                ),
+              )
 
             ),
-            SizedBox(height: 200,)
+            SizedBox(height: 40,),
+            Container(
+              height: 40,
+              width: 140,
+              decoration: BoxDecoration(
+                  color: Colors.black,
+                  borderRadius: BorderRadius.circular(5),
+                  boxShadow: [
+                    BoxShadow(
+                        color: Colors.black.withOpacity(0.2),
+                        blurRadius: 3,
+                        offset: Offset(0, 4))
+                  ]),
+              child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.black, elevation: 0),
+                  onPressed: (){},
+                  child: Text(
+                    "Save",
+                    style: TextStyle(color: Colors.white, fontSize: 17),
+                  )),
+            ),
+            SizedBox(height: 60,)
           ],
         ),
       ),
@@ -270,6 +299,9 @@ SizedBox(height: 30,),
           Container(
             height: 50,
             child: ListTile(
+              onTap: () {
+                Navigator.pushNamed(context, '/viewaccount');
+              },
               leading: Icon(
                 Icons.account_circle_rounded,
                 color: Colors.blueGrey,
@@ -301,6 +333,9 @@ SizedBox(height: 30,),
           Container(
             height: 50,
             child: ListTile(
+              onTap: () {
+                Navigator.pushNamed(context, '/notification');
+              },
               leading: Icon(
                 Icons.notifications_active,
                 color: Colors.blueGrey,
@@ -329,12 +364,16 @@ SizedBox(height: 30,),
           Container(
             height: 50,
             child: ListTile(
+              onTap: () {
+                Navigator.pushNamed(context, '/adduser');
+              },
               leading: Icon(
                 Icons.person_add_alt_1,
                 color: Colors.blueGrey,
                 size: 25,
               ),
               title: Text(
+
                 "Add user",
                 style: TextStyle(color: Colors.blueGrey),
               ),
@@ -373,6 +412,9 @@ SizedBox(height: 30,),
           Container(
             height: 50,
             child: ListTile(
+              onTap: () {
+                Navigator.pushNamed(context, '/shop');
+              },
               leading: Icon(
                 Icons.shopping_bag_outlined,
                 color: Colors.blueGrey,

@@ -19,11 +19,6 @@ class _NavPageState extends State<NavPage> {
     '/companion'
   ];
 
-  TextEditingController startController = TextEditingController();
-  TextEditingController dateController = TextEditingController();
-  TextEditingController endController = TextEditingController();
-  TextEditingController titleController = TextEditingController();
-  TextEditingController locationController = TextEditingController();
   int currentIndex = 2;
   String? selectedStart;
   String? selectedEnd;
@@ -33,6 +28,13 @@ class _NavPageState extends State<NavPage> {
       currentIndex = index;
     });
   }
+
+  TextEditingController startController = TextEditingController();
+  TextEditingController dateController = TextEditingController();
+  TextEditingController endController = TextEditingController();
+  TextEditingController titleController = TextEditingController();
+  TextEditingController locationController = TextEditingController();
+
 
   @override
   Widget build(BuildContext context) {
@@ -117,7 +119,7 @@ class _NavPageState extends State<NavPage> {
                       ],
                     ),
                     SizedBox(
-                      height: 100,
+                      height: 70,
                     ),
                     Row(
                       children: [
@@ -128,8 +130,27 @@ class _NavPageState extends State<NavPage> {
                         SizedBox(
                           width: 40,
                         ),
-                        _button("100 points", Colors.black, Colors.white, () {}),
-
+                Container(
+                  height: 40,
+                  width: 170,
+                  decoration: BoxDecoration(
+                      color: Colors.black,
+                      borderRadius: BorderRadius.circular(5),
+                      boxShadow: [
+                        BoxShadow(
+                            color: Colors.black.withOpacity(0.2),
+                            blurRadius: 3,
+                            offset: Offset(0, 4))
+                      ]),
+                  child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.black, elevation: 0),
+                      onPressed: (){},
+                      child: Text(
+                        "100 points",
+                        style: TextStyle(color: Colors.white, fontSize: 17),
+                      )),
+                )
                       ],
                     ),
                     SizedBox(height: 100,),
@@ -138,8 +159,28 @@ class _NavPageState extends State<NavPage> {
                       height: 2,
                       width: 400,
                     ),
-                    SizedBox(height: 20,),
-                    _button("EVENTS", Colors.blueGrey, Colors.white, () {}),
+                    SizedBox(height: 70,),
+                    Container(
+                      height: 40,
+                      width: 170,
+                      decoration: BoxDecoration(
+                          color: Colors.black,
+                          borderRadius: BorderRadius.circular(5),
+                          boxShadow: [
+                            BoxShadow(
+                                color: Colors.black.withOpacity(0.2),
+                                blurRadius: 3,
+                                offset: Offset(0, 4))
+                          ]),
+                      child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.black, elevation: 0),
+                          onPressed: (){},
+                          child: Text(
+                            "Your Events",
+                            style: TextStyle(color: Colors.white, fontSize: 17),
+                          )),
+                    ),
                     SizedBox(height: 10,),
                     Text(
                       "Complete your task to earn points and level up your progress!",
@@ -241,6 +282,9 @@ class _NavPageState extends State<NavPage> {
           Container(
             height: 50,
             child: ListTile(
+              onTap: () {
+                Navigator.pushNamed(context, '/home');
+              },
               leading: Icon(
                 Icons.home_outlined,
                 color: Colors.blueGrey,
@@ -255,6 +299,9 @@ class _NavPageState extends State<NavPage> {
           Container(
             height: 50,
             child: ListTile(
+              onTap: () {
+                Navigator.pushNamed(context, '/notification');
+              },
               leading: Icon(
                 Icons.notifications_active,
                 color: Colors.blueGrey,
@@ -327,6 +374,9 @@ class _NavPageState extends State<NavPage> {
           Container(
             height: 50,
             child: ListTile(
+              onTap: () {
+                Navigator.pushNamed(context, '/shop');
+              },
               leading: Icon(
                 Icons.shopping_bag_outlined,
                 color: Colors.blueGrey,

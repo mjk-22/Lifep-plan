@@ -3,9 +3,6 @@ import 'package:lifeplan/navPages/worldclock.dart';
 
 class ShopCompanionPage extends StatelessWidget {
   const ShopCompanionPage({super.key});
-
-
-
   void _showConfirmationDialog(BuildContext context, String itemName) {
     showDialog(
       context: context,

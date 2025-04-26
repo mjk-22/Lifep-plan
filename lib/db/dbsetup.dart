@@ -31,7 +31,8 @@ class LifeplanDatabase {
 
       _currentUser = FirebaseAuth.instance.currentUser;
       return true;
-    } on Exception catch (e) {
+    } on FirebaseAuthException catch (e) {
+      print(e.message);
       return false;
     }
   }

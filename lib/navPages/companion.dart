@@ -40,18 +40,30 @@ class _CompanionPageState extends State<CompanionPage> {
     return Scaffold(
       drawer: drawer(),
       backgroundColor: const Color(0xFFEAF2F5),
-      appBar: AppBar(
-        backgroundColor: const Color(0xFFEAF2F5),
-        title: const Text(
-          'Current Companion',
-          style: TextStyle(
-            fontSize: 22,
-            fontWeight: FontWeight.w400,
-            color: Colors.blueGrey,
-          ),
+        appBar: AppBar(
+            backgroundColor: Color(0xFFDCF0F0),
+            bottom: PreferredSize(
+                preferredSize: Size.fromHeight(1.0),
+                child: Container(
+                  width: 370,
+                  color: Colors.blueGrey,
+                  height: 1.0,
+                )),
+            leading: Builder(
+              builder: (context) {
+                return IconButton(
+                  icon: const Icon(
+                    Icons.chevron_right,
+                    color: Colors.blueGrey,
+                    size: 40,
+                  ),
+                  onPressed: () {
+                    Scaffold.of(context).openDrawer();
+                  },
+                );
+              },
+            )
         ),
-        centerTitle: true,
-      ),
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -236,6 +248,9 @@ class _CompanionPageState extends State<CompanionPage> {
           Container(
             height: 50,
             child: ListTile(
+              onTap: () {
+                Navigator.pushNamed(context, '/viewaccount');
+              },
               leading: Icon(
                 Icons.account_circle_rounded,
                 color: Colors.blueGrey,
@@ -250,6 +265,9 @@ class _CompanionPageState extends State<CompanionPage> {
           Container(
             height: 50,
             child: ListTile(
+              onTap: () {
+                Navigator.pushNamed(context, '/home');
+              },
               leading: Icon(
                 Icons.home_outlined,
                 color: Colors.blueGrey,
@@ -264,6 +282,9 @@ class _CompanionPageState extends State<CompanionPage> {
           Container(
             height: 50,
             child: ListTile(
+              onTap: () {
+                Navigator.pushNamed(context, '/notification');
+              },
               leading: Icon(
                 Icons.notifications_active,
                 color: Colors.blueGrey,
@@ -292,12 +313,16 @@ class _CompanionPageState extends State<CompanionPage> {
           Container(
             height: 50,
             child: ListTile(
+              onTap: () {
+                Navigator.pushNamed(context, '/adduser');
+              },
               leading: Icon(
                 Icons.person_add_alt_1,
                 color: Colors.blueGrey,
                 size: 25,
               ),
               title: Text(
+
                 "Add user",
                 style: TextStyle(color: Colors.blueGrey),
               ),
@@ -336,6 +361,9 @@ class _CompanionPageState extends State<CompanionPage> {
           Container(
             height: 50,
             child: ListTile(
+              onTap: () {
+                Navigator.pushNamed(context, '/shop');
+              },
               leading: Icon(
                 Icons.shopping_bag_outlined,
                 color: Colors.blueGrey,
