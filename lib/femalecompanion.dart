@@ -15,10 +15,28 @@ class _FemaleCompanionState extends State<FemaleCompanion> {
   Color bgColor = Colors.white;
   int currentIndex = 0;
   LifeplanDatabase db = LifeplanDatabase();
+  String success = "";
 
   Future<List<Companion>> getCompanions() async{
     List<Companion> list = await db.readCompanion('female');
     return list;
+  }
+
+  void addCompanionToUserAccount() async{
+
+    if (bgColor == Colors.blueGrey) {
+
+      List<Companion> companions = await getCompanions();
+      Companion chosenCompanion = companions[currentIndex];
+      db.updateAccountCompanion(chosenCompanion);
+      success = "";
+      Navigator.pushNamed(context, "/home");
+    } else {
+      setState(() {
+        success = "Pick a companion before proceeding!";
+      });
+    }
+
   }
 
   @override
@@ -91,7 +109,9 @@ class _FemaleCompanionState extends State<FemaleCompanion> {
                       ),
                     ),
                     SizedBox(height: 40,),
-                    _button("Next", Colors.black, Colors.white, () {Navigator.pushNamed(context,'/home');})
+                    Text(success, style: TextStyle(color: Colors.red),),
+                    SizedBox(height: 10,),
+                    _button("Next", Colors.black, Colors.white, () {addCompanionToUserAccount();})
                   ],
                 ),);
             }

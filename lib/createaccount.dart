@@ -48,16 +48,29 @@ class _CreateAccountState extends State<CreateAccount> {
       return;
     }
 
-    bool added = await db.addAccount(emailController.text, passwordController.text);
+    bool codeSent = await db.registerAndSendCode(emailController.text, passwordController.text);
     setState(() {
-      if (added) {
-        success = 'Wrong input format!';
-        Navigator.pushNamed(context, '/companiongender');
+      if (codeSent) {
+        success = 'A verification code was sent to your email';
+        successColor = Colors.green;
       } else {
-        success = 'Wrong input format!';
+        success = 'Invalid Input!';
         successColor = Colors.red;
       }
     });
+  }
+
+  Future<void> verifiedAccount() async{
+    bool verified = await db.verifyUserAndAdd();
+
+    if (verified) {
+      Navigator.pushNamed(context, '/companiongender');
+    } else {
+      setState(() {
+        success = 'Email has not been validated!';
+        successColor = Colors.red;
+      });
+    }
   }
 
   @override
@@ -88,8 +101,8 @@ class _CreateAccountState extends State<CreateAccount> {
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       TextButton(
-                          onPressed: () {},
-                          child: Text("Forgot your password?", style: TextStyle(color: Colors.black, fontWeight: FontWeight.w500),)
+                          onPressed: verifiedAccount,
+                          child: Text("Check Email Verification", style: TextStyle(color: Colors.black, fontWeight: FontWeight.w500),)
                       ),
                     ],
                   ),
@@ -102,21 +115,7 @@ class _CreateAccountState extends State<CreateAccount> {
                 ],
               ),
             ),
-            SizedBox(height: 50,),
-            Text("Or continue with", style: TextStyle(color: Colors.black, fontWeight: FontWeight.w500)),
-            SizedBox(height: 10),
-            Container(
-              width: 50,
-              height: 50,
-              decoration: BoxDecoration(
-                  color: Color(0xFFEEFFFF),
-                  borderRadius: BorderRadius.circular(5)
-              ),
-              child: Padding(
-                padding: EdgeInsets.all(5),
-                child: Image.asset("assets/google.png", width: 10, height: 10,),
-              ),
-            ),
+
           ],
         ),
       ),

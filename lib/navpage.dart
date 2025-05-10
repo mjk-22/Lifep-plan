@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
-
+import 'package:lifeplan/db/dbsetup.dart';
+import 'package:lifeplan/entities/account.dart';
 
 class NavPage extends StatefulWidget {
   const NavPage({super.key});
@@ -11,6 +12,7 @@ class NavPage extends StatefulWidget {
 }
 
 class _NavPageState extends State<NavPage> {
+  LifeplanDatabase db = LifeplanDatabase();
   List<String> navPages = [
     '/schedules',
     '/timer',
@@ -261,6 +263,7 @@ class _NavPageState extends State<NavPage> {
           ),
           SizedBox(
             height: 20,
+
           ),
           Container(
             height: 50,
@@ -314,15 +317,9 @@ class _NavPageState extends State<NavPage> {
             ),
           ),
           SizedBox(height: 20),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              Container(
-                width: 260,
-                height: 1.0,
-                color: Colors.blueGrey,
-              ),
-            ],
+          Container(
+            height: 1.0,
+            color: Colors.blueGrey,
           ),
           SizedBox(
             height: 20,
@@ -358,15 +355,9 @@ class _NavPageState extends State<NavPage> {
           SizedBox(
             height: 20,
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              Container(
-                width: 260,
-                height: 1.0,
-                color: Colors.blueGrey,
-              ),
-            ],
+          Container(
+            height: 1.0,
+            color: Colors.blueGrey,
           ),
           SizedBox(
             height: 20,
@@ -398,6 +389,27 @@ class _NavPageState extends State<NavPage> {
               ),
               title: Text(
                 "Points",
+                style: TextStyle(color: Colors.blueGrey),
+              ),
+            ),
+          ),
+    Container(
+    height: 1.0,
+    color: Colors.blueGrey,
+    ),
+          Container(
+            height: 50,
+            child: ListTile(
+              onTap: () {
+                db.logout(context);
+              },
+              leading: Icon(
+                Icons.logout,
+                color: Colors.blueGrey,
+                size: 25,
+              ),
+              title: Text(
+                "Logout",
                 style: TextStyle(color: Colors.blueGrey),
               ),
             ),

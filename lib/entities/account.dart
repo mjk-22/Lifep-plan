@@ -4,14 +4,14 @@ class Account {
   String _email;
   String? _username;
   bool _isNotificationOn;
-  Map<String, List<Event>>? _events;
+  List<Event>? _events;
   Companion? _companion;
 
   Account({
     required String email,
     required String? username,
     required bool isNotificationOn,
-    required Map<String, List<Event>>? events,
+    required List<Event>? events,
     required Companion? companion
   }): _email = email,
       _username = username,
@@ -44,9 +44,9 @@ class Account {
   }
 
 
-  Map<String, List<Event>>? get events => _events;
+  List<Event>? get events => _events;
 
-  set events(Map<String, List<Event>>? event) {
+  set events(List<Event>? event) {
     _events = event;
   }
 
@@ -64,7 +64,7 @@ class Account {
         email: map['email'],
         username: map['username'],
         isNotificationOn: map['is_notification_on'],
-        events: Map<String, List<Event>>.from(map['events']),
+        events: List.from(map['events'] as List).map((e) => Event.fromMap(e)).toList(),
         companion: Companion.fromMap(map['companion'])
     );
   }

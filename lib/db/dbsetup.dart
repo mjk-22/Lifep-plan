@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'dart:async';
 import 'package:lifeplan/entities/account.dart';
 import 'package:lifeplan/entities/companion.dart';
@@ -9,30 +10,38 @@ class LifeplanDatabase {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
   final FirebaseAuth _auth = FirebaseAuth.instance;
   static int counter = 0;
-  late User? _currentUser;
-  User? get currentUser => _currentUser;
 
-  Future<bool> addAccount(String email, String password) async {
+  Future<bool> registerAndSendCode(String email, String password) async {
     try {
       UserCredential uc = await _auth.createUserWithEmailAndPassword(
-          email: email,
-          password: password
+          email: email.trim(),
+          password: password.trim()
       );
 
-      //await uc.user!.sendEmailVerification();
+      await uc.user!.sendEmailVerification();
 
-      await _db.collection('accounts').doc(uc.user!.uid).set({
-        'email': email,
+      return true;
+    } on FirebaseAuthException catch (e) {
+      print(e.message);
+      return false;
+    }
+  }
+
+  Future<bool> verifyUserAndAdd() async {
+    User? user = _auth.currentUser;
+    await user?.reload();
+    user = _auth.currentUser;
+
+    if (user != null && user.emailVerified) {
+      await _db.collection('accounts').doc(user.uid).set({
+        'email': user.email,
         'username': "User",
         'companion': null,
         'is_notification_on' : false,
         'events': []
       });
-
-      _currentUser = FirebaseAuth.instance.currentUser;
       return true;
-    } on FirebaseAuthException catch (e) {
-      print(e.message);
+    } else {
       return false;
     }
   }
@@ -44,12 +53,34 @@ class LifeplanDatabase {
         password: password,
       );
 
-      _currentUser = uc.user;
-      return true;
+      User? user = uc.user;
+
+      await user?.reload();
+      user = _auth.currentUser;
+
+      if (user != null && user.emailVerified) {
+        return true;
+      } else {
+        return false;
+      }
     } catch (e) {
       print('Error: $e');
       return false;
     }
+  }
+
+  Future<bool> forgottenPassword(String email) async{
+    try {
+      await FirebaseAuth.instance.sendPasswordResetEmail(email: email.trim());
+      return true;
+    } on FirebaseAuthException catch (e) {
+      return false;
+    }
+  }
+
+  Future<void> logout(BuildContext context) async{
+    await FirebaseAuth.instance.signOut();
+    Navigator.pushReplacementNamed(context, '/login');
   }
 
 
@@ -77,20 +108,21 @@ class LifeplanDatabase {
   }
 
   Future<Account?> readAccount() async {
-    User? cu = FirebaseAuth.instance.currentUser;
-    String uid = cu!.uid;
-    DocumentSnapshot doc = await FirebaseFirestore.
-    instance
-        .collection('accounts')
-        .doc(uid)
-        .get();
-
     try {
-      doc = await _db.collection('accounts').doc().get();
+      User? user = FirebaseAuth.instance.currentUser;
 
-      if (doc.exists) {
-        Account account = Account.fromMap(doc.data() as Map<String, dynamic>);
-        return account;
+      if (user != null) {
+        DocumentSnapshot doc = await FirebaseFirestore.
+        instance
+            .collection('accounts')
+            .doc(user.uid)
+            .get();
+
+
+        if (doc.exists) {
+          Account account = Account.fromMap(doc.data() as Map<String, dynamic>);
+          return account;
+        }
       }
       return null;
     } on FirebaseException catch (e) {
@@ -108,21 +140,6 @@ class LifeplanDatabase {
         String? updatedEmail = user.email;
         await _db.collection('accounts').doc(user.uid).update(
             {'email': updatedEmail});
-        return true;
-      } on FirebaseAuthException catch (e) {
-        return false;
-      }
-    } else {
-      return false;
-    }
-  }
-
-  Future<bool> updatePassword(String email) async {
-    User? user = _auth.currentUser;
-
-    if (user != null) {
-      try {
-        await _auth.sendPasswordResetEmail(email: email);
         return true;
       } on FirebaseAuthException catch (e) {
         return false;

@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class Event {
   DateTime _startTime;
   DateTime _endTime;
@@ -47,10 +49,19 @@ class Event {
     _startTime = value;
   }
 
+  factory Event.fromMap(Map<String, dynamic> map) {
+    return Event(
+        startTime: (map['start_time'] as Timestamp).toDate(),
+        endTime: (map['end_time'] as Timestamp).toDate(),
+        title: map["title"],
+        location: map['location']
+    );
+  }
+
   Map<String, dynamic> toMap() {
     return {
-      'start_time' : startTime,
-      'end_time' : endTime,
+      'start_time' : Timestamp.fromDate(startTime),
+      'end_time' : Timestamp.fromDate(endTime),
       'title' : title,
       'location' : location
     };
