@@ -86,7 +86,6 @@ class LifeplanDatabase {
 
   Future<bool> addEvent(Event event) async {
     User? user = FirebaseAuth.instance.currentUser;
-
     if (user != null) {
       try {
         await _db.collection('accounts').doc(user.uid).update({
@@ -184,29 +183,35 @@ class LifeplanDatabase {
   Future<bool> updateAccountEvent(Event oldEvent, Event updatedEvent) async {
     User? user = FirebaseAuth.instance.currentUser;
     DocumentSnapshot snapshot = await _db.collection('accounts')
-    .doc(user!.uid)
-    .get();
-    
+        .doc(user!.uid)
+        .get();
+
     List<dynamic> eventsFromUser = List.from(snapshot['events']);
-    int i = eventsFromUser.indexWhere((map) =>
-      map['start_time'] == oldEvent.startTime &&
-      map['end_time'] == oldEvent.endTime &&
-        map['title'] == oldEvent.title &&
-        map['location'] == oldEvent.location
-    );
+
+    int i = eventsFromUser.indexWhere((map) {
+      final Timestamp startTime = map['start_time'];
+      final Timestamp endTime = map['end_time'];
+      return startTime.toDate().isAtSameMomentAs(oldEvent.startTime) &&
+          endTime.toDate().isAtSameMomentAs(oldEvent.endTime) &&
+          map['title'] == oldEvent.title &&
+          map['location'] == oldEvent.location;
+    });
 
     if (i != -1) {
-      eventsFromUser[i]['start_time'] == updatedEvent.startTime;
-      eventsFromUser[i]['end_time'] == updatedEvent.endTime;
-      eventsFromUser[i]['title'] == updatedEvent.title;
-      eventsFromUser[i]['location'] == updatedEvent.location;
+      eventsFromUser[i] = {
+        'start_time': updatedEvent.startTime,
+        'end_time': updatedEvent.endTime,
+        'title': updatedEvent.title,
+        'location': updatedEvent.location,
+      };
 
       try {
         await _db.collection('accounts').doc(user.uid).update({
-          'events' : eventsFromUser
+          'events': eventsFromUser,
         });
         return true;
       } catch (e) {
+        print("Update failed: $e");
         return false;
       }
     } else {

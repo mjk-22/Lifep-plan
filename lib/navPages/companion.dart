@@ -45,7 +45,16 @@ class _CompanionPageState extends State<CompanionPage> {
       (future: db.readAccount(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return CircularProgressIndicator();
+            return Center(
+              child: SizedBox(
+                height: 100,
+                width: 100,
+                child: CircularProgressIndicator(
+                  strokeWidth: 4,
+                  color: Color(0xFFDCF0F0)
+                ),
+              ),
+            );
           } else if (snapshot.hasError) {
             return Text(snapshot.error.toString());
           } else if (!snapshot.hasData || snapshot.data == null) {

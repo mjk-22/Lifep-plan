@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lifeplan/entities/event.dart';
 import 'dart:async';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:lifeplan/db/dbsetup.dart';
@@ -32,10 +33,62 @@ class _NavPageState extends State<NavPage> {
   }
 
   TextEditingController startController = TextEditingController();
-  TextEditingController dateController = TextEditingController();
   TextEditingController endController = TextEditingController();
   TextEditingController titleController = TextEditingController();
   TextEditingController locationController = TextEditingController();
+
+  Future<void> createEvent(Function(String) updateSuccess) async {
+    if (startController.text.isNotEmpty &&
+        endController.text.isNotEmpty &&
+        titleController.text.isNotEmpty &&
+        locationController.text.isNotEmpty &&
+        selectedStart != null &&
+        selectedEnd != null) {
+
+      try {
+
+        List<String> parsedStart = startController.text.split(":");
+        int startHour = int.parse(parsedStart[0]);
+        int startMin = int.parse(parsedStart[1]);
+
+        List<String> parsedEnd = endController.text.split(":");
+        int endHour = int.parse(parsedEnd[0]);
+        int endMin = int.parse(parsedEnd[1]);
+
+
+        if (selectedStart == "PM" && startHour < 12) startHour += 12;
+        if (selectedStart == "AM" && startHour == 12) startHour = 0;
+
+        if (selectedEnd == "PM" && endHour < 12) endHour += 12;
+        if (selectedEnd == "AM" && endHour == 12) endHour = 0;
+
+        DateTime now = DateTime.now();
+        DateTime startTime = DateTime(now.year, now.month, now.day, startHour, startMin);
+        DateTime endTime = DateTime(now.year, now.month, now.day, endHour, endMin);
+
+
+        if (endTime.isBefore(startTime) || endTime.isAtSameMomentAs(startTime)) {
+          updateSuccess("Enter a valid time range!");
+          return;
+        }
+
+        Event newEvent = Event(
+          startTime: startTime,
+          endTime: endTime,
+          title: titleController.text,
+          location: locationController.text,
+        );
+        await db.addEvent(newEvent);
+
+        updateSuccess("New event added!");
+      } catch (e) {
+        updateSuccess("Invalid time format!");
+      }
+
+    } else {
+      updateSuccess("Fill out everything");
+    }
+  }
 
 
   @override
@@ -449,6 +502,7 @@ class _NavPageState extends State<NavPage> {
   }
 
   Future<void> createDialog(BuildContext context) async{
+    String dialogSuccessMsg = "";
     await showDialog(
       context: context,
       barrierDismissible: false,
@@ -463,31 +517,7 @@ class _NavPageState extends State<NavPage> {
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text("Date:", style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),),
-                    SizedBox(height: 5),
-                    SizedBox(
-                      height: 40,
-                      width: 250,
-                      child: TextFormField(
-                        controller: dateController,
-                        cursorColor: Colors.black,
-                        keyboardType: TextInputType.number,
-                        inputFormatters: [
-                          MaskTextInputFormatter(mask: '##/##/##'),
-                        ],
-                        decoration: InputDecoration(
-                          labelText: "mm/dd/yy",
-                          labelStyle: TextStyle(color: Colors.black),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.transparent),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.grey),
-                          ),
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: 15),
+
                     Text("Title:", style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),),
                     SizedBox(height: 5),
                     SizedBox(
@@ -598,25 +628,34 @@ class _NavPageState extends State<NavPage> {
                           ),
                         ),
 
+
                       ],
                     ),
+                    SizedBox(height: 25,),
+                    Align(
+                      alignment: Alignment.center,
+                      child: Text(dialogSuccessMsg),
+                    )
                   ],
                 ),
               ),
               actions: [
                 TextButton(
-                  onPressed: () {
-
-                    Navigator.pop(context);
+                  onPressed: () async{
+                    await createEvent((message) {
+                      setStateDialog(() {
+                        dialogSuccessMsg = message;
+                      });
+                    });
                   },
-                  child: Text("Create", style: TextStyle(color: Colors.black),),
+                  child: Text("Create", style: TextStyle(color: Colors.black, fontSize: 18),),
                 ),
                 TextButton(
                   onPressed: () {
 
                     Navigator.pop(context);
                   },
-                  child: Text("Cancel", style: TextStyle(color: Colors.black)),
+                  child: Text("Cancel", style: TextStyle(color: Colors.black, fontSize: 18)),
                 ),
               ],
             );

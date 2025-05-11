@@ -42,6 +42,7 @@ dev_dependencies:
   cloud_firestore_platform_interface: any
   cloud_firestore: any
   firebase_auth: any
+  intl: any
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
