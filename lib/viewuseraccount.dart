@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:lifeplan/db/dbsetup.dart';
+import 'package:lifeplan/entities/account.dart';
 
 class ViewAccount extends StatefulWidget {
   const ViewAccount({super.key});
@@ -8,259 +10,239 @@ class ViewAccount extends StatefulWidget {
 }
 
 class _ViewAccountState extends State<ViewAccount> {
+  LifeplanDatabase db = LifeplanDatabase();
   TextEditingController emailController = TextEditingController();
   TextEditingController usernameController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
   TextEditingController notificationController = TextEditingController();
-
+  TextEditingController companionController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      drawer: drawer(),
-      appBar: AppBar(
-          backgroundColor: Color(0xFFDCF0F0),
-          bottom: PreferredSize(
-              preferredSize: Size.fromHeight(1.0),
-              child: Container(
-                width: 370,
-                color: Colors.blueGrey,
-                height: 1.0,
-              )),
-          leading: Builder(
-            builder: (context) {
-              return IconButton(
-                icon: const Icon(
-                  Icons.chevron_right,
-                  color: Colors.blueGrey,
-                  size: 40,
+    return FutureBuilder(
+        future: db.readAccount(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(
+              child: SizedBox(
+                height: 100,
+                width: 100,
+                child: CircularProgressIndicator(
+                    strokeWidth: 4,
+                    color: Color(0xFFDCF0F0)
                 ),
-                onPressed: () {
-                  Scaffold.of(context).openDrawer();
-                },
-              );
-            },
-          )
-      ),
-      backgroundColor: Color(0xFFDCF0F0),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text("Your Account", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30, color: Colors.blueGrey),),
-            Icon(Icons.account_circle_rounded, color: Colors.blueGrey, size: 130,),
-            Text("USER123",style: TextStyle(fontSize: 25, color: Colors.black),),
-SizedBox(height: 30,),
-            Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(9),
-                color: Colors.white60,
               ),
-              padding: EdgeInsets.all(10),
-              width: 300,
-              height: 400,
-              child: SingleChildScrollView(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SizedBox(height: 40,),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text("Email Address"),
-                        SizedBox(
-                          height: 30,
-                          width: 150,
-                          child: TextFormField(
-                            controller: emailController,
-                            cursorColor: Colors.black,
-                            keyboardType: TextInputType.number,
-                            decoration: InputDecoration(
-                              labelText: "email",
-                              labelStyle: TextStyle(color: Colors.black),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: BorderSide(color: Colors.transparent),
-                              ),
-                              enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(color: Colors.grey),
-                              ),
+            );
+          } else if (snapshot.hasError) {
+            return Text(snapshot.error.toString());
+          } else if (!snapshot.hasData || snapshot.data == null) {
+            return Text("null");
+          }
 
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 40,),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text("username"),
-                        SizedBox(
-                          height: 30,
-                          width: 150,
-                          child: TextFormField(
-                            controller: emailController,
-                            cursorColor: Colors.black,
-                            keyboardType: TextInputType.number,
-                            decoration: InputDecoration(
-                              labelText: "username",
-                              labelStyle: TextStyle(color: Colors.black),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: BorderSide(color: Colors.transparent),
-                              ),
-                              enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(color: Colors.grey),
-                              ),
+          Account userAccount = snapshot.data!;
 
-                            ),
-                          ),
-                        ),
-                      ],
-                    )
-                    ,
-                    SizedBox(height: 40,),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text("Password"),
-                        SizedBox(
-                          height: 30,
-                          width: 150,
-                          child: TextFormField(
-                            controller: emailController,
-                            cursorColor: Colors.black,
-                            keyboardType: TextInputType.number,
-                            decoration: InputDecoration(
-                              labelText: "password",
-                              labelStyle: TextStyle(color: Colors.black),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: BorderSide(color: Colors.transparent),
-                              ),
-                              enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(color: Colors.grey),
-                              ),
+          emailController.text = userAccount.email.toString();
+          usernameController.text = userAccount.username!;
+          notificationController.text = userAccount.isNotificationOn == false ? "Off" : "On";
+          companionController.text = userAccount.companion!.name;
 
-                            ),
-                          ),
-                        ),
-                      ],
-                    )
-                    ,
-                    SizedBox(height: 40,),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text("Notifications"),
-                        SizedBox(
-                          height: 30,
-                          width: 150,
-                          child: TextFormField(
-                            controller: emailController,
-                            cursorColor: Colors.black,
-                            keyboardType: TextInputType.number,
-                            decoration: InputDecoration(
-                              labelText: "Notification On",
-                              labelStyle: TextStyle(color: Colors.black),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: BorderSide(color: Colors.transparent),
-                              ),
-                              enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(color: Colors.grey),
-                              ),
-
-                            ),
-                          ),
-                        ),
-                      ],
-                    )
-                    ,
-                    SizedBox(height: 40,),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text("Current Points"),
-                        SizedBox(
-                          height: 30,
-                          width: 150,
-                          child: TextFormField(
-                            controller: emailController,
-                            cursorColor: Colors.black,
-                            keyboardType: TextInputType.number,
-                            decoration: InputDecoration(
-                              labelText: "360 points",
-                              labelStyle: TextStyle(color: Colors.black),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: BorderSide(color: Colors.transparent),
-                              ),
-                              enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(color: Colors.grey),
-                              ),
-
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 40,),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text("Current Companion"),
-                        SizedBox(
-                          height: 30,
-                          width: 150,
-                          child: TextFormField(
-                            controller: emailController,
-                            cursorColor: Colors.black,
-                            keyboardType: TextInputType.number,
-                            decoration: InputDecoration(
-                              labelText: "Alissa John",
-                              labelStyle: TextStyle(color: Colors.black),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: BorderSide(color: Colors.transparent),
-                              ),
-                              enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(color: Colors.grey),
-                              ),
-
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-
-                  ],
-
-                ),
-              )
-
+          return Scaffold(
+            drawer: drawer(),
+            appBar: AppBar(
+                backgroundColor: Color(0xFFDCF0F0),
+                bottom: PreferredSize(
+                    preferredSize: Size.fromHeight(1.0),
+                    child: Container(
+                      width: 370,
+                      color: Colors.blueGrey,
+                      height: 1.0,
+                    )),
+                leading: Builder(
+                  builder: (context) {
+                    return IconButton(
+                      icon: const Icon(
+                        Icons.chevron_right,
+                        color: Colors.blueGrey,
+                        size: 40,
+                      ),
+                      onPressed: () {
+                        Scaffold.of(context).openDrawer();
+                      },
+                    );
+                  },
+                )
             ),
-            SizedBox(height: 40,),
-            Container(
-              height: 40,
-              width: 140,
-              decoration: BoxDecoration(
-                  color: Colors.black,
-                  borderRadius: BorderRadius.circular(5),
-                  boxShadow: [
-                    BoxShadow(
-                        color: Colors.black.withOpacity(0.2),
-                        blurRadius: 3,
-                        offset: Offset(0, 4))
-                  ]),
-              child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.black, elevation: 0),
-                  onPressed: (){},
-                  child: Text(
-                    "Save",
-                    style: TextStyle(color: Colors.white, fontSize: 17),
-                  )),
+            backgroundColor: Color(0xFFDCF0F0),
+            body: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text("Your Account", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30, color: Colors.blueGrey),),
+                  Icon(Icons.account_circle_rounded, color: Colors.blueGrey, size: 130,),
+                  Text(userAccount.username!,style: TextStyle(fontSize: 25, color: Colors.black),),
+                  SizedBox(height: 30,),
+                  Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(9),
+                        color: Colors.white60,
+                      ),
+                      padding: EdgeInsets.all(10),
+                      width: 300,
+                      height: 370,
+                      child: SingleChildScrollView(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            SizedBox(height: 40,),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text("Email Address:"),
+                            SizedBox(
+                              height: 30,
+                              width: 150,
+                              child: TextFormField(
+                                controller: emailController,
+                                cursorColor: Colors.black,
+                                decoration: InputDecoration(
+                                  contentPadding:  EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                                  labelText: "email",
+                                  labelStyle: TextStyle(color: Colors.black),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(color: Colors.transparent),
+                                  ),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(color: Colors.grey),
+                                  ),
+
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                            SizedBox(height: 40,),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text("username:"),
+                                SizedBox(
+                                  height: 30,
+                                  width: 150,
+                                  child: TextFormField(
+                                    controller: usernameController,
+                                    cursorColor: Colors.black,
+                                    keyboardType: TextInputType.number,
+                                    decoration: InputDecoration(
+                                      contentPadding:  EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                                      labelText: "username",
+                                      labelStyle: TextStyle(color: Colors.black),
+                                      focusedBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(color: Colors.transparent),
+                                      ),
+                                      enabledBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(color: Colors.grey),
+                                      ),
+
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 40,),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text("Notifications:"),
+                                SizedBox(
+                                  height: 30,
+                                  width: 150,
+                                  child: TextFormField(
+                                    readOnly: true,
+                                    controller: notificationController,
+                                    cursorColor: Colors.black,
+                                    keyboardType: TextInputType.number,
+                                    decoration: InputDecoration(
+                                      contentPadding:  EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                                      labelText: "notification",
+                                      labelStyle: TextStyle(color: Colors.black),
+                                      focusedBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(color: Colors.transparent),
+                                      ),
+                                      enabledBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(color: Colors.grey),
+                                      ),
+
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 40,),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text("Companion:"),
+                                SizedBox(
+                                  height: 30,
+                                  width: 150,
+                                  child: TextFormField(
+                                    readOnly: true,
+                                    controller: companionController,
+                                    cursorColor: Colors.black,
+                                    keyboardType: TextInputType.number,
+                                    decoration: InputDecoration(
+                                      contentPadding:  EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                                      labelText: 'name',
+                                      labelStyle: TextStyle(color: Colors.black),
+                                      focusedBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(color: Colors.transparent),
+                                      ),
+                                      enabledBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(color: Colors.grey),
+                                      ),
+
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+
+                          ],
+
+                        ),
+                      )
+
+                  ),
+                  SizedBox(height: 40,),
+                  Container(
+                    height: 40,
+                    width: 140,
+                    decoration: BoxDecoration(
+                        color: Colors.black,
+                        borderRadius: BorderRadius.circular(5),
+                        boxShadow: [
+                          BoxShadow(
+                              color: Colors.black.withOpacity(0.2),
+                              blurRadius: 3,
+                              offset: Offset(0, 4))
+                        ]),
+                    child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.black, elevation: 0),
+                        onPressed: ()async{
+                          await db.updateAccountUsername(usernameController.text);
+                          setState(() {});
+                        },
+                        child: Text(
+                          "Save",
+                          style: TextStyle(color: Colors.white, fontSize: 17),
+                        )),
+                  ),
+                  SizedBox(height: 60,)
+                ],
+              ),
             ),
-            SizedBox(height: 60,)
-          ],
-        ),
-      ),
+          );
+        }
     );
   }
 
@@ -295,6 +277,7 @@ SizedBox(height: 30,),
           ),
           SizedBox(
             height: 20,
+
           ),
           Container(
             height: 50,
@@ -348,15 +331,9 @@ SizedBox(height: 30,),
             ),
           ),
           SizedBox(height: 20),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              Container(
-                width: 260,
-                height: 1.0,
-                color: Colors.blueGrey,
-              ),
-            ],
+          Container(
+            height: 1.0,
+            color: Colors.blueGrey,
           ),
           SizedBox(
             height: 20,
@@ -364,16 +341,12 @@ SizedBox(height: 30,),
           Container(
             height: 50,
             child: ListTile(
-              onTap: () {
-                Navigator.pushNamed(context, '/adduser');
-              },
               leading: Icon(
                 Icons.person_add_alt_1,
                 color: Colors.blueGrey,
                 size: 25,
               ),
               title: Text(
-
                 "Add user",
                 style: TextStyle(color: Colors.blueGrey),
               ),
@@ -396,15 +369,9 @@ SizedBox(height: 30,),
           SizedBox(
             height: 20,
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              Container(
-                width: 260,
-                height: 1.0,
-                color: Colors.blueGrey,
-              ),
-            ],
+          Container(
+            height: 1.0,
+            color: Colors.blueGrey,
           ),
           SizedBox(
             height: 20,
@@ -436,6 +403,27 @@ SizedBox(height: 30,),
               ),
               title: Text(
                 "Points",
+                style: TextStyle(color: Colors.blueGrey),
+              ),
+            ),
+          ),
+          Container(
+            height: 1.0,
+            color: Colors.blueGrey,
+          ),
+          Container(
+            height: 50,
+            child: ListTile(
+              onTap: () {
+                db.logout(context);
+              },
+              leading: Icon(
+                Icons.logout,
+                color: Colors.blueGrey,
+                size: 25,
+              ),
+              title: Text(
+                "Logout",
                 style: TextStyle(color: Colors.blueGrey),
               ),
             ),
