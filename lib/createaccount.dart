@@ -2,28 +2,26 @@ import 'package:flutter/material.dart';
 import 'package:lifeplan/validateInput/Validation.dart';
 import 'package:lifeplan/db/dbsetup.dart';
 
-
 class CreateAccount extends StatefulWidget {
   const CreateAccount({super.key});
-
   @override
   State<CreateAccount> createState() => _CreateAccountState();
 }
 
 class _CreateAccountState extends State<CreateAccount> {
-  LifeplanDatabase db = new LifeplanDatabase();
-  TextEditingController emailController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
-  TextEditingController confirmController = TextEditingController();
+  final LifeplanDatabase db = LifeplanDatabase();
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+  final confirmController = TextEditingController();
   String success = '';
   Color successColor = Colors.black;
 
-  bool validInput(){
-    return (emailController.text.isNotEmpty &&
-        passwordController.text.isNotEmpty && confirmController.text.isNotEmpty);
-  }
+  bool validInput() =>
+      emailController.text.isNotEmpty &&
+          passwordController.text.isNotEmpty &&
+          confirmController.text.isNotEmpty;
 
-  Future<void>? inputSuccess() async{
+  Future<void> inputSuccess() async {
     if (!validInput()) {
       setState(() {
         success = 'Please fill all fields!';
@@ -31,38 +29,33 @@ class _CreateAccountState extends State<CreateAccount> {
       });
       return;
     }
-
     if (!Validation.validPasswordLength(passwordController.text)) {
       setState(() {
-        success = 'Password needs to contain minimum 12 characters!';
+        success = 'Password needs minimum 12 characters!';
         successColor = Colors.red;
       });
       return;
     }
-
-    if (!Validation.validConfirmPassword(passwordController.text, confirmController.text)) {
+    if (!Validation.validConfirmPassword(
+        passwordController.text, confirmController.text)) {
       setState(() {
         success = 'Passwords do not match!';
         successColor = Colors.red;
       });
       return;
     }
-
-    bool codeSent = await db.registerAndSendCode(emailController.text, passwordController.text);
+    bool codeSent = await db.registerAndSendCode(
+        emailController.text, passwordController.text);
     setState(() {
-      if (codeSent) {
-        success = 'A verification code was sent to your email';
-        successColor = Colors.green;
-      } else {
-        success = 'Invalid Input!';
-        successColor = Colors.red;
-      }
+      success = codeSent
+          ? 'Verification code sent to your email'
+          : 'Invalid input!';
+      successColor = codeSent ? Colors.green : Colors.red;
     });
   }
 
-  Future<void> verifiedAccount() async{
+  Future<void> verifiedAccount() async {
     bool verified = await db.verifyUserAndAdd();
-
     if (verified) {
       Navigator.pushNamed(context, '/companiongender');
     } else {
@@ -73,112 +66,174 @@ class _CreateAccountState extends State<CreateAccount> {
     }
   }
 
+  static const Color bgTeal = Color(0xFFCDE7EF);
+  static const Color appBarGrey = Color(0xFFB0B0B0);
+  static const Color iconGrey = Color(0xFF4A4A4A);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFDCF0F0),
-      body: Center(
+      backgroundColor: bgTeal,
+      appBar: AppBar(
+        title: const Text('Create Account'),
+        backgroundColor: appBarGrey,
+        iconTheme: IconThemeData(color: iconGrey),
+      ),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            SizedBox(height: 150,),
-            Text("Create Account", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),),
-            SizedBox(height: 15,),
-            SizedBox(
-              width: 300,
-              child: Text("Create an account to get started. It’s quick and easy!", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15), textAlign: TextAlign.center,),
-            ),
-            SizedBox(height: 50,),
-            Padding(
-              padding: EdgeInsets.fromLTRB(40, 0, 40, 0),
-              child: Column(
-                children: [
-                  _inputField(emailController, "Email", false),
-                  SizedBox(height: 20,),
-                  _inputField(passwordController, "Password", true),
-                  SizedBox(height: 20,),
-                  _inputField(confirmController, "Confirm Password", true),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      TextButton(
-                          onPressed: verifiedAccount,
-                          child: Text("Check Email Verification", style: TextStyle(color: Colors.black, fontWeight: FontWeight.w500),)
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 15,),
-                  Text(success, style: TextStyle(color: successColor, fontWeight: FontWeight.w500), textAlign: TextAlign.center,),
-                  SizedBox(height: 20,),
-                  _button("Sign Up", Colors.black, Color(0xFFEEFFFF), 17.0, inputSuccess),
-                  SizedBox(height: 20,),
-                  _button("Already have an account?",Color(0xFFEEFFFF), Colors.black, 13.0, () {Navigator.pushNamed(context, '/login');})
-                ],
+            const SizedBox(height: 16),
+            Text(
+              'Get started with LifePlan',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+                color: iconGrey,
               ),
             ),
+            const SizedBox(height: 24),
 
+            // Email
+            _inputField(
+              controller: emailController,
+              label: 'Email',
+              icon: Icons.email_outlined,
+              iconColor: iconGrey,
+            ),
+            const SizedBox(height: 16),
+
+            // Password
+            _inputField(
+              controller: passwordController,
+              label: 'Password',
+              icon: Icons.lock_outline,
+              iconColor: iconGrey,
+              obscure: true,
+            ),
+            const SizedBox(height: 16),
+
+            // Confirm
+            _inputField(
+              controller: confirmController,
+              label: 'Confirm Password',
+              icon: Icons.lock_outline,
+              iconColor: iconGrey,
+              obscure: true,
+            ),
+            const SizedBox(height: 12),
+
+            Align(
+              alignment: Alignment.centerRight,
+              child: TextButton(
+                onPressed: verifiedAccount,
+                child: Text(
+                  'Check Email Verification',
+                  style: TextStyle(
+                      color: iconGrey, fontWeight: FontWeight.w500),
+                ),
+              ),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              success,
+              textAlign: TextAlign.center,
+              style: TextStyle(color: successColor, fontWeight: FontWeight.w500),
+            ),
+            const SizedBox(height: 16),
+
+            // Sign Up
+            _actionButton(
+              label: 'Sign Up',
+              bgColor: appBarGrey,
+              textColor: Colors.white,
+              onTap: inputSuccess,
+            ),
+            const SizedBox(height: 12),
+            // Already have
+            _actionButton(
+              label: 'Already have an account?',
+              bgColor: Colors.white,
+              textColor: appBarGrey,
+              outline: true,
+              onTap: () => Navigator.pushNamed(context, '/login'),
+            ),
           ],
         ),
       ),
     );
   }
-  Widget _inputField(controller, message, obscure) {
+
+  Widget _inputField({
+    required TextEditingController controller,
+    required String label,
+    required IconData icon,
+    required Color iconColor,
+    bool obscure = false,
+  }) {
     return Container(
-      height: 40,
-      width: 300,
       decoration: BoxDecoration(
-          boxShadow: [
-            BoxShadow(
-                color: Colors.black.withOpacity(0.2),
-                blurRadius: 3,
-                offset: Offset(0, 4)
-            )
-          ]
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05),
+            blurRadius: 4,
+            offset: const Offset(0, 2),
+          ),
+        ],
       ),
       child: TextField(
         controller: controller,
-        decoration: InputDecoration(
-            labelStyle: TextStyle(color: Colors.grey),
-            labelText: message,
-            fillColor: Color(0xFFEEFFFF),
-            filled: true,
-            border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(5),
-                borderSide: BorderSide.none
-            )
-
-        ),
         obscureText: obscure,
-      ),
-    );
-  }
-
-  Widget _button(message, buttonColor, textColor, textSize, void Function() function) {
-    return Container(
-      height: 40,
-      width: 250,
-      decoration: BoxDecoration(
-          color: buttonColor,
-          borderRadius: BorderRadius.circular(5),
-          boxShadow: [
-            BoxShadow(
-                color: Colors.black.withOpacity(0.2),
-                blurRadius: 3,
-                offset: Offset(0, 4)
-            )
-          ]
-      ),
-      child: ElevatedButton(
-          style: ElevatedButton.styleFrom(
-              backgroundColor: buttonColor,
-              elevation: 0
+        decoration: InputDecoration(
+          prefixIcon: Icon(icon, color: iconColor),
+          hintText: label,
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+            borderSide: BorderSide.none,
           ),
-          onPressed: function,
-          child: Text(message, style: TextStyle(color: textColor, fontSize: textSize),)
+        ),
       ),
     );
   }
 
+  Widget _actionButton({
+    required String label,
+    required Color bgColor,
+    required Color textColor,
+    required VoidCallback onTap,
+    bool outline = false,
+  }) {
+    return SizedBox(
+      height: 48,
+      child: outline
+          ? OutlinedButton(
+        onPressed: onTap,
+        style: OutlinedButton.styleFrom(
+          side: BorderSide(color: bgColor),
+          backgroundColor: bgColor,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+        ),
+        child: Text(label,
+            style: TextStyle(color: textColor, fontSize: 16)),
+      )
+          : ElevatedButton(
+        onPressed: onTap,
+        style: ElevatedButton.styleFrom(
+          backgroundColor: bgColor,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+          elevation: 2,
+        ),
+        child:
+        Text(label, style: TextStyle(color: textColor, fontSize: 16)),
+      ),
+    );
+  }
 }
-
-
-

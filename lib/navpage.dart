@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lifeplan/entities/event.dart';
+import 'package:lifeplan/grouplistscreen.dart';
 import 'dart:async';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:lifeplan/db/dbsetup.dart';
@@ -403,8 +404,18 @@ class _NavPageState extends State<NavPage> {
                 "Chat Rooms",
                 style: TextStyle(color: Colors.blueGrey),
               ),
+              onTap: () {
+                Navigator.pop(context); // close the drawer
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => GroupListScreen(),
+                  ),
+                );
+              },
             ),
           ),
+
           SizedBox(
             height: 20,
           ),
