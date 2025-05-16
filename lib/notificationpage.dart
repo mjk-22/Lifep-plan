@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'notificationsetup.dart';
 
 class NotificationScreen extends StatefulWidget {
   @override
@@ -8,6 +11,21 @@ class NotificationScreen extends StatefulWidget {
 class _NotificationScreenState extends State<NotificationScreen> {
   bool isReminderOn = true;
   bool isEmailUpdateOn = true;
+  String? companionReply;
+  void updateCompanionReply(String reply) {
+    setState(() {
+      companionReply = reply;
+    });
+  }
+  @override
+  void initState() {
+    super.initState();
+
+    Timer.periodic(Duration(minutes: 2), (timer) {
+      print('Attempting to show companion notification from NotificationPage...');
+      showCompanionReplyNotification('Ju04hfBnfV4BAhTDiDlI', onReply: updateCompanionReply);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -69,6 +87,24 @@ class _NotificationScreenState extends State<NotificationScreen> {
               onChanged: (value) => setState(() => isEmailUpdateOn = value),
             ),
             const SizedBox(height: 30),
+            if (companionReply != null) ...[
+              Container(
+                width: double.infinity,
+                padding: EdgeInsets.all(12),
+                margin: EdgeInsets.only(bottom: 10),
+                decoration: BoxDecoration(
+                  color: Colors.teal[100],
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Row(
+                  children: [
+                    Icon(Icons.chat_bubble, color: Colors.teal[900]),
+                    SizedBox(width: 10),
+                    Expanded(child: Text(companionReply!, style: TextStyle(fontSize: 16))),
+                  ],
+                ),
+              ),
+            ],
             Expanded(
               child: Container(
                 width: double.infinity,

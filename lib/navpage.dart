@@ -5,22 +5,47 @@ import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:lifeplan/db/dbsetup.dart';
 import 'package:lifeplan/entities/account.dart';
 
+import 'notificationsetup.dart';
+
 class NavPage extends StatefulWidget {
   const NavPage({super.key});
 
   @override
   State<NavPage> createState() => _NavPageState();
+
+
 }
 
 class _NavPageState extends State<NavPage> {
   LifeplanDatabase db = LifeplanDatabase();
+   Timer? notificationTimer;
   List<String> navPages = [
     '/schedules',
     '/timer',
     '/home',
     '/planner',
     '/companion'
-  ];
+   ];
+  @override
+  void initState() {
+    super.initState();
+    startNotificationLoop();
+  }
+
+  void startNotificationLoop() {
+    notificationTimer?.cancel();
+
+    notificationTimer = Timer.periodic(Duration(seconds: 20), (timer) {
+      showCompanionReplyNotification('Ju04hfBnfV4BAhTDiDlI');
+    });
+  }
+
+  @override
+  void dispose() {
+    notificationTimer?.cancel();
+    super.dispose();
+  }
+
 
   int currentIndex = 2;
   String? selectedStart;

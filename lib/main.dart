@@ -20,6 +20,10 @@ import 'viewuseraccount.dart';
 import 'notificationpage.dart';
 import 'adduser.dart';
 import  'companionshop.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+
+final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+FlutterLocalNotificationsPlugin();
 
 Future<void> main() async{
   WidgetsFlutterBinding.ensureInitialized();
@@ -30,6 +34,13 @@ Future<void> main() async{
           messagingSenderId: "749770628450",
           projectId: "lifeplan-20378")
   );
+  const AndroidInitializationSettings initializationSettingsAndroid =
+  AndroidInitializationSettings('@mipmap/ic_launcher');
+
+  final InitializationSettings initializationSettings =
+  InitializationSettings(android: initializationSettingsAndroid);
+
+  await flutterLocalNotificationsPlugin.initialize(initializationSettings);
   runApp(MyPlanner());
 }
 
