@@ -21,9 +21,7 @@ import 'notificationpage.dart';
 import 'adduser.dart';
 import  'companionshop.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-
-final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-FlutterLocalNotificationsPlugin();
+import 'package:awesome_notifications/awesome_notifications.dart';
 
 Future<void> main() async{
   WidgetsFlutterBinding.ensureInitialized();
@@ -34,13 +32,25 @@ Future<void> main() async{
           messagingSenderId: "749770628450",
           projectId: "lifeplan-20378")
   );
-  const AndroidInitializationSettings initializationSettingsAndroid =
-  AndroidInitializationSettings('@mipmap/ic_launcher');
+  AwesomeNotifications().initialize(
+    null,
+    [
+      NotificationChannel(
+        channelKey: 'companion_channel',
+        channelName: 'Companion Replies',
+        channelDescription: 'Notifications from your companion',
+        defaultColor: Colors.teal,
+        importance: NotificationImportance.High,
+        channelShowBadge: true,
+      )
+    ],
+  );
 
-  final InitializationSettings initializationSettings =
-  InitializationSettings(android: initializationSettingsAndroid);
+  bool isAllowed = await AwesomeNotifications().isNotificationAllowed();
+  if (!isAllowed) {
+    await AwesomeNotifications().requestPermissionToSendNotifications();
+  }
 
-  await flutterLocalNotificationsPlugin.initialize(initializationSettings);
   runApp(MyPlanner());
 }
 

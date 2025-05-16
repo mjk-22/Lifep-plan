@@ -4,6 +4,7 @@ import 'dart:async';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:lifeplan/db/dbsetup.dart';
 import 'package:lifeplan/entities/account.dart';
+import 'package:awesome_notifications/awesome_notifications.dart';
 
 import 'notificationsetup.dart';
 
@@ -18,7 +19,6 @@ class NavPage extends StatefulWidget {
 
 class _NavPageState extends State<NavPage> {
   LifeplanDatabase db = LifeplanDatabase();
-   Timer? notificationTimer;
   List<String> navPages = [
     '/schedules',
     '/timer',
@@ -29,24 +29,15 @@ class _NavPageState extends State<NavPage> {
   @override
   void initState() {
     super.initState();
-    startNotificationLoop();
-  }
-
-  void startNotificationLoop() {
-    notificationTimer?.cancel();
-
-    notificationTimer = Timer.periodic(Duration(seconds: 20), (timer) {
-      showCompanionReplyNotification('Ju04hfBnfV4BAhTDiDlI');
+    // AwesomeNotifications().isNotificationAllowed().then((isAllowed) {
+    //   if (!isAllowed) {
+    //     AwesomeNotifications().requestPermissionToSendNotifications();
+    //   }
+    // });
+    Timer.periodic(Duration(minutes: 2), (timer) {
+      showCompanionReplyAwesome('Ju04hfBnfV4BAhTDiDlI');
     });
   }
-
-  @override
-  void dispose() {
-    notificationTimer?.cancel();
-    super.dispose();
-  }
-
-
   int currentIndex = 2;
   String? selectedStart;
   String? selectedEnd;

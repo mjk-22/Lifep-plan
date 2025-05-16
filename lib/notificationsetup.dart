@@ -1,10 +1,8 @@
 import 'dart:math';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:awesome_notifications/awesome_notifications.dart';
 
-import 'main.dart';
-
-void showCompanionReplyNotification(String companionDocId, {Function(String)? onReply}) async {
+Future<void> showCompanionReplyAwesome(String companionDocId) async {
   final doc = await FirebaseFirestore.instance
       .collection('companions')
       .doc(companionDocId)
@@ -17,28 +15,15 @@ void showCompanionReplyNotification(String companionDocId, {Function(String)? on
       final random = Random();
       String reply = replies[random.nextInt(replies.length)];
 
-      print("Selected reply: $reply");
-
-      const AndroidNotificationDetails androidDetails = AndroidNotificationDetails(
-        'companion_channel',
-        'Companion Replies',
-        importance: Importance.max,
-        priority: Priority.high,
-        showWhen: true,
+      await AwesomeNotifications().createNotification(
+        content: NotificationContent(
+          id: DateTime.now().millisecondsSinceEpoch.remainder(100000),
+          channelKey: 'companion_channel',
+          title: 'Your Companion Says',
+          body: reply,
+          notificationLayout: NotificationLayout.Default,
+        ),
       );
-
-      const NotificationDetails platformDetails = NotificationDetails(android: androidDetails);
-
-      await flutterLocalNotificationsPlugin.show(
-        0,
-        'Your Companion Says',
-        reply,
-        platformDetails,
-      );
-
-      if (onReply != null) {
-        onReply(reply);
-      }
     }
   }
 }
