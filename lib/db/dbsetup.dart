@@ -219,6 +219,8 @@ class LifeplanDatabase {
     }
   }
 
+
+
   Future<bool> deleteEvent(Event event) async {
     User? user = FirebaseAuth.instance.currentUser;
 

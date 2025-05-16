@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'package:lifeplan/db/dbsetup.dart';
 class NotificationScreen extends StatefulWidget {
   @override
   _NotificationScreenState createState() => _NotificationScreenState();
@@ -8,6 +8,7 @@ class NotificationScreen extends StatefulWidget {
 class _NotificationScreenState extends State<NotificationScreen> {
   bool isReminderOn = true;
   bool isEmailUpdateOn = true;
+  LifeplanDatabase db = LifeplanDatabase();
 
   @override
   Widget build(BuildContext context) {
@@ -129,6 +130,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
           ),
           SizedBox(
             height: 20,
+
           ),
           Container(
             height: 50,
@@ -182,35 +184,12 @@ class _NotificationScreenState extends State<NotificationScreen> {
             ),
           ),
           SizedBox(height: 20),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              Container(
-                width: 260,
-                height: 1.0,
-                color: Colors.blueGrey,
-              ),
-            ],
+          Container(
+            height: 1.0,
+            color: Colors.blueGrey,
           ),
           SizedBox(
             height: 20,
-          ),
-          Container(
-            height: 50,
-            child: ListTile(
-              onTap: () {
-                Navigator.pushNamed(context, '/adduser');
-              },
-              leading: Icon(
-                Icons.person_add_alt_1,
-                color: Colors.blueGrey,
-                size: 25,
-              ),
-              title: Text(
-                "Add user",
-                style: TextStyle(color: Colors.blueGrey),
-              ),
-            ),
           ),
           Container(
             height: 50,
@@ -229,15 +208,9 @@ class _NotificationScreenState extends State<NotificationScreen> {
           SizedBox(
             height: 20,
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              Container(
-                width: 260,
-                height: 1.0,
-                color: Colors.blueGrey,
-              ),
-            ],
+          Container(
+            height: 1.0,
+            color: Colors.blueGrey,
           ),
           SizedBox(
             height: 20,
@@ -246,29 +219,15 @@ class _NotificationScreenState extends State<NotificationScreen> {
             height: 50,
             child: ListTile(
               onTap: () {
-                Navigator.pushNamed(context, '/shop');
+                db.logout(context);
               },
               leading: Icon(
-                Icons.shopping_bag_outlined,
+                Icons.logout,
                 color: Colors.blueGrey,
                 size: 25,
               ),
               title: Text(
-                "Shop",
-                style: TextStyle(color: Colors.blueGrey),
-              ),
-            ),
-          ),
-          Container(
-            height: 50,
-            child: ListTile(
-              leading: Icon(
-                Icons.monetization_on,
-                color: Colors.blueGrey,
-                size: 25,
-              ),
-              title: Text(
-                "Points",
+                "Logout",
                 style: TextStyle(color: Colors.blueGrey),
               ),
             ),
