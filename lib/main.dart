@@ -16,6 +16,8 @@ import 'navPages/planner.dart';
 import 'navPages/companion.dart';
 import 'viewuseraccount.dart';
 import 'notificationpage.dart';
+import 'package:awesome_notifications/awesome_notifications.dart';
+import 'grouplistscreen.dart';
 
 
 Future<void> main() async{
@@ -27,6 +29,26 @@ Future<void> main() async{
           messagingSenderId: "749770628450",
           projectId: "lifeplan-20378")
   );
+
+  AwesomeNotifications().initialize(
+    null,
+    [
+      NotificationChannel(
+        channelKey: 'companion_channel',
+        channelName: 'Companion Replies',
+        channelDescription: 'Notifications from your companion',
+        defaultColor: Colors.teal,
+        importance: NotificationImportance.High,
+        channelShowBadge: true,
+      )
+    ],
+  );
+
+  bool isAllowed = await AwesomeNotifications().isNotificationAllowed();
+  if (!isAllowed) {
+    await AwesomeNotifications().requestPermissionToSendNotifications();
+  }
+
   runApp(MyPlanner());
 }
 
@@ -51,6 +73,7 @@ class MyPlanner extends StatelessWidget {
         '/companion' : (context) => CompanionPage(),
         '/viewaccount' : (context) => ViewAccount(),
         '/notification' : (context)=> NotificationScreen(),
+        '/groupchat' : (context) => GroupListScreen()
       },
     );
   }

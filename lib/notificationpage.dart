@@ -1,14 +1,24 @@
-import 'package:flutter/material.dart';
+import 'dart:async';
 import 'package:lifeplan/db/dbsetup.dart';
+import 'package:flutter/material.dart';
+import 'notificationsetup.dart';
+
 class NotificationScreen extends StatefulWidget {
   @override
   _NotificationScreenState createState() => _NotificationScreenState();
 }
 
 class _NotificationScreenState extends State<NotificationScreen> {
+  LifeplanDatabase db = LifeplanDatabase();
   bool isReminderOn = true;
   bool isEmailUpdateOn = true;
-  LifeplanDatabase db = LifeplanDatabase();
+  // String? companionReply;
+  // void updateCompanionReply(String reply) {
+  //   setState(() {
+  //     companionReply = reply;
+  //   });
+  // }
+
 
   @override
   Widget build(BuildContext context) {
@@ -194,6 +204,9 @@ class _NotificationScreenState extends State<NotificationScreen> {
           Container(
             height: 50,
             child: ListTile(
+              onTap: () {
+                Navigator.pushNamed(context, '/groupchat');
+              },
               leading: Icon(
                 Icons.message,
                 color: Colors.blueGrey,

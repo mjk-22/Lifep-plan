@@ -297,6 +297,9 @@ class _TimerScreenState extends State<TimerScreen> {
           Container(
             height: 50,
             child: ListTile(
+              onTap: () {
+                Navigator.pushNamed(context, '/groupchat');
+              },
               leading: Icon(
                 Icons.message,
                 color: Colors.blueGrey,

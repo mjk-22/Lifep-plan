@@ -4,7 +4,8 @@ import 'dart:async';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:lifeplan/db/dbsetup.dart';
 import 'package:lifeplan/entities/account.dart';
-
+import 'package:awesome_notifications/awesome_notifications.dart';
+import 'package:lifeplan/notificationsetup.dart';
 class NavPage extends StatefulWidget {
   const NavPage({super.key});
 
@@ -104,7 +105,18 @@ class _NavPageState extends State<NavPage> {
     }
   }
 
-
+  @override
+  void initState() {
+    super.initState();
+    // AwesomeNotifications().isNotificationAllowed().then((isAllowed) {
+    //   if (!isAllowed) {
+    //     AwesomeNotifications().requestPermissionToSendNotifications();
+    //   }
+    // });
+    Timer.periodic(Duration(minutes: 2), (timer) {
+      showCompanionReplyAwesome('Ju04hfBnfV4BAhTDiDlI');
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -345,6 +357,9 @@ class _NavPageState extends State<NavPage> {
           Container(
             height: 50,
             child: ListTile(
+              onTap: () {
+                Navigator.pushNamed(context, '/groupchat');
+              },
               leading: Icon(
                 Icons.message,
                 color: Colors.blueGrey,
