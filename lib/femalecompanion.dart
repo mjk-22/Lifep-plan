@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:lifeplan/db/dbsetup.dart';
@@ -146,4 +147,3 @@ class _FemaleCompanionState extends State<FemaleCompanion> {
     );
   }
 }
-

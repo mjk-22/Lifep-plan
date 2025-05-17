@@ -219,6 +219,8 @@ class LifeplanDatabase {
     }
   }
 
+
+
   Future<bool> deleteEvent(Event event) async {
     User? user = FirebaseAuth.instance.currentUser;
 
@@ -260,22 +262,22 @@ class LifeplanDatabase {
   }
 
   Future<bool> addReply(int companionId, String reply) async {
-      try {
-        await _db.collection('companions').doc(companionId.toString()).update({
-          'replies' : FieldValue.arrayRemove([reply])
-        });
-        return true;
-      } catch (e) {
-        return false;
-      }
+    try {
+      await _db.collection('companions').doc(companionId.toString()).update({
+        'replies' : FieldValue.arrayRemove([reply])
+      });
+      return true;
+    } catch (e) {
+      return false;
+    }
   }
 
   Future<List<Companion>> readCompanion(String type) async {
     try {
       QuerySnapshot querySnapshot = await _db
-      .collection("companions")
-      .where('gender', isEqualTo: type)
-      .get();
+          .collection("companions")
+          .where('gender', isEqualTo: type)
+          .get();
 
       List<Companion> companions = querySnapshot.docs.map((doc) {
         return Companion.fromMap(doc.data() as Map<String, dynamic>);

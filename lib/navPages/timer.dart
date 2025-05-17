@@ -1,8 +1,6 @@
 import 'dart:async';
-
+import 'package:lifeplan/db/dbsetup.dart';
 import 'package:flutter/material.dart';
-import 'package:lifeplan/navPages/worldclock.dart';
-
 import 'companion.dart';
 
 class TimerScreen extends StatefulWidget {
@@ -12,6 +10,7 @@ class TimerScreen extends StatefulWidget {
   State<TimerScreen> createState() => _TimerScreenState();
 }
 class _TimerScreenState extends State<TimerScreen> {
+  LifeplanDatabase db = LifeplanDatabase();
   bool isRunning = false;
   Duration duration = const Duration(minutes: 40);
   Timer? timer;
@@ -58,15 +57,17 @@ class _TimerScreenState extends State<TimerScreen> {
   }
 
 
-  
+
   List<String> navPages = [
-    '/schedules',
     '/timer',
     '/home',
     '/planner',
     '/companion'
   ];
-  int currentIndex = 1;
+  int currentIndex = 0;
+  String? selectedStart;
+  String? selectedEnd;
+
   void _tappedItem(int index) {
     setState(() {
       currentIndex = index;
@@ -79,111 +80,85 @@ class _TimerScreenState extends State<TimerScreen> {
     // (your existing build method goes here)
     // So no need to modify the UI part unless you want animation or color changes.
     // Only this logic block needed to be changed.
-    return Scaffold(
-      backgroundColor: const Color(0xFFEAF2F5),
-      body: SafeArea(
-        child: Column(
-          children: [
-            const SizedBox(height: 10),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Row(
-                children: [
-                  GestureDetector(
-                    onTap: () => Navigator.pop(context),
-                    child: const Icon(Icons.arrow_back_ios_new, size: 20),
+    return Scaffold(drawer: drawer(),
+        backgroundColor:  Color(0xFFDCF0F0),
+        appBar: AppBar(
+            backgroundColor: Color(0xFFDCF0F0),
+            bottom: PreferredSize(
+                preferredSize: Size.fromHeight(1.0),
+                child: Container(
+                  width: 370,
+                  color: Colors.blueGrey,
+                  height: 1.0,
+                )),
+            leading: Builder(
+              builder: (context) {
+                return IconButton(
+                  icon: const Icon(
+                    Icons.chevron_right,
+                    color: Colors.blueGrey,
+                    size: 40,
                   ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 20),
-
-            // Tabs
-            Container(
-              margin: const EdgeInsets.symmetric(horizontal: 60),
-              padding: const EdgeInsets.all(6),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(25),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Expanded(
-                    child: HoverTab(
-                      label: "World clock",
-                      selected: false,
-                      onTap: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => ClockApp()));
-                      },
-                    ),
-                  ),
-                  Expanded(
-                    child: HoverTab(
-                      label: "Alarm",
-                      selected: false,
-                      onTap: () {},
-                    ),
-                  ),
-                  Expanded(
-                    child: HoverTab(
-                      label: "Timer",
-                      selected: true,
-                      onTap: () {},
-                    ),
-                  ),
-                ],
-              ),
-            ),
-
-            const SizedBox(height: 50),
-
-            // Timer Circle
-            Container(
-              width: 250,
-              height: 250,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                shape: BoxShape.circle,
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.1),
-                    offset: const Offset(0, 10),
-                    blurRadius: 10,
-                  )
-                ],
-              ),
-              child: Center(
-                child: Text(
-                  _formatDuration(duration),
-                  style: const TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
-                ),
-              ),
-            ),
-
-            const SizedBox(height: 40),
-
-            // Buttons
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                IconButton(
-                  icon: Icon(isRunning ? Icons.pause : Icons.play_arrow),
-                  iconSize: 40,
-                  onPressed: toggleTimer,
-                ),
-                const SizedBox(width: 30),
-                IconButton(
-                  icon: const Icon(Icons.refresh),
-                  iconSize: 35,
-                  onPressed: resetTimer,
-                ),
-              ],
-            ),
-          ],
+                  onPressed: () {
+                    Scaffold.of(context).openDrawer();
+                  },
+                );
+              },
+            )
         ),
-      ),
-      bottomNavigationBar: bottomNav(currentIndex)
+        body: SafeArea(
+          child: Column(
+            children: [
+              const SizedBox(height: 10),
+
+              const SizedBox(height: 200),
+
+              // Timer Circle
+              Container(
+                width: 250,
+                height: 250,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  shape: BoxShape.circle,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.1),
+                      offset: const Offset(0, 10),
+                      blurRadius: 10,
+                    )
+                  ],
+                ),
+                child: Center(
+                  child: Text(
+                    _formatDuration(duration),
+                    style: const TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+                  ),
+                ),
+              ),
+
+              const SizedBox(height: 40),
+
+              // Buttons
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  IconButton(
+                    icon: Icon(isRunning ? Icons.pause : Icons.play_arrow),
+                    iconSize: 40,
+                    onPressed: toggleTimer,
+                  ),
+                  const SizedBox(width: 30),
+                  IconButton(
+                    icon: const Icon(Icons.refresh),
+                    iconSize: 35,
+                    onPressed: resetTimer,
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+        bottomNavigationBar: bottomNav(currentIndex)
 
     );
   }
@@ -209,10 +184,6 @@ class _TimerScreenState extends State<TimerScreen> {
         currentIndex: index,
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.calendar_month_outlined),
-            label: "Schedules",
-          ),
-          BottomNavigationBarItem(
             icon: Icon(Icons.timer_outlined),
             label: "Timer",
           ),
@@ -229,5 +200,146 @@ class _TimerScreenState extends State<TimerScreen> {
             label: "Companion",
           ),
         ]);
+  }
+
+  Widget drawer() {
+    return Drawer(
+      backgroundColor: Color(0xFFE3FFFF),
+      child: ListView(
+        padding: EdgeInsets.zero,
+        children: [
+          SizedBox(height: 35),
+          Container(
+            height: 30,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                IconButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    icon: Icon(
+                      Icons.chevron_left,
+                      color: Colors.blueGrey,
+                      size: 40,
+                    ))
+              ],
+            ),
+          ),
+          SizedBox(height: 35),
+          Container(
+            height: 1.0,
+            color: Colors.blueGrey,
+          ),
+          SizedBox(
+            height: 20,
+
+          ),
+          Container(
+            height: 50,
+            child: ListTile(
+              onTap: () {
+                Navigator.pushNamed(context, '/viewaccount');
+              },
+              leading: Icon(
+                Icons.account_circle_rounded,
+                color: Colors.blueGrey,
+                size: 25,
+              ),
+              title: Text(
+                "Account",
+                style: TextStyle(color: Colors.blueGrey),
+              ),
+            ),
+          ),
+          Container(
+            height: 50,
+            child: ListTile(
+              onTap: () {
+                Navigator.pushNamed(context, '/home');
+              },
+              leading: Icon(
+                Icons.home_outlined,
+                color: Colors.blueGrey,
+                size: 25,
+              ),
+              title: Text(
+                "Home",
+                style: TextStyle(color: Colors.blueGrey),
+              ),
+            ),
+          ),
+          Container(
+            height: 50,
+            child: ListTile(
+              onTap: () {
+                Navigator.pushNamed(context, '/notification');
+              },
+              leading: Icon(
+                Icons.notifications_active,
+                color: Colors.blueGrey,
+                size: 25,
+              ),
+              title: Text(
+                "Notifications",
+                style: TextStyle(color: Colors.blueGrey),
+              ),
+            ),
+          ),
+          SizedBox(height: 20),
+          Container(
+            height: 1.0,
+            color: Colors.blueGrey,
+          ),
+          SizedBox(
+            height: 20,
+          ),
+          Container(
+            height: 50,
+            child: ListTile(
+              onTap: () {
+                Navigator.pushNamed(context, '/groupchat');
+              },
+              leading: Icon(
+                Icons.message,
+                color: Colors.blueGrey,
+                size: 25,
+              ),
+              title: Text(
+                "Chat Rooms",
+                style: TextStyle(color: Colors.blueGrey),
+              ),
+            ),
+          ),
+          SizedBox(
+            height: 20,
+          ),
+          Container(
+            height: 1.0,
+            color: Colors.blueGrey,
+          ),
+          SizedBox(
+            height: 20,
+          ),
+          Container(
+            height: 50,
+            child: ListTile(
+              onTap: () {
+                db.logout(context);
+              },
+              leading: Icon(
+                Icons.logout,
+                color: Colors.blueGrey,
+                size: 25,
+              ),
+              title: Text(
+                "Logout",
+                style: TextStyle(color: Colors.blueGrey),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }

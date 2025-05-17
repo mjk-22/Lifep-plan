@@ -13,11 +13,11 @@ class Companion {
     required String gender,
     required String image
   }):
-      _companionId = companionId,
-      _replies = replies,
-      _name = name,
-      _gender = gender,
-      _image = image;
+        _companionId = companionId,
+        _replies = replies,
+        _name = name,
+        _gender = gender,
+        _image = image;
 
 
   String get name => _name;
@@ -63,12 +63,11 @@ class Companion {
 
   factory Companion.fromMap(Map<String, dynamic> map) {
     return Companion(
-    companionId: map['companion_id'],
-    replies: List<String>.from(map['replies']),
-    name: map['name'],
-    gender: map['gender'],
-    image: map['image_path']
-  );
+        companionId: map['companion_id'],
+        replies: List<String>.from(map['replies']),
+        name: map['name'],
+        gender: map['gender'],
+        image: map['image_path']
+    );
   }
 }
-

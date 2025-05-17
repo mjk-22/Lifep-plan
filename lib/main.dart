@@ -11,19 +11,14 @@ import 'companiongender.dart';
 import 'femalecompanion.dart';
 import 'masculinecompanion.dart';
 import 'navpage.dart';
-import 'navPages/homepage.dart';
-import 'navPages/schedules.dart';
 import 'navPages/timer.dart';
 import 'navPages/planner.dart';
 import 'navPages/companion.dart';
 import 'viewuseraccount.dart';
 import 'notificationpage.dart';
-import 'adduser.dart';
-import  'companionshop.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:awesome_notifications/awesome_notifications.dart';
+import 'grouplistscreen.dart';
 
-final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-FlutterLocalNotificationsPlugin();
 
 Future<void> main() async{
   WidgetsFlutterBinding.ensureInitialized();
@@ -34,13 +29,26 @@ Future<void> main() async{
           messagingSenderId: "749770628450",
           projectId: "lifeplan-20378")
   );
-  const AndroidInitializationSettings initializationSettingsAndroid =
-  AndroidInitializationSettings('@mipmap/ic_launcher');
 
-  final InitializationSettings initializationSettings =
-  InitializationSettings(android: initializationSettingsAndroid);
+  AwesomeNotifications().initialize(
+    null,
+    [
+      NotificationChannel(
+        channelKey: 'companion_channel',
+        channelName: 'Companion Replies',
+        channelDescription: 'Notifications from your companion',
+        defaultColor: Colors.teal,
+        importance: NotificationImportance.High,
+        channelShowBadge: true,
+      )
+    ],
+  );
 
-  await flutterLocalNotificationsPlugin.initialize(initializationSettings);
+  bool isAllowed = await AwesomeNotifications().isNotificationAllowed();
+  if (!isAllowed) {
+    await AwesomeNotifications().requestPermissionToSendNotifications();
+  }
+
   runApp(MyPlanner());
 }
 
@@ -57,17 +65,15 @@ class MyPlanner extends StatelessWidget {
         '/login' : (context) => LoginPage(),
         '/createaccount' : (context) => CreateAccount(),
         '/startjourney' : (context) => AccountPage(),
-         '/masc' : (context) => MaleCompanion(),
+        '/masc' : (context) => MaleCompanion(),
         '/fem' : (context) => FemaleCompanion(),
         '/companiongender' : (context) => CompanionGender(),
-        '/schedules' : (context) => SchedulesPage(),
         '/timer' : (context) => TimerScreen(),
         '/planner' : (context) => PlannerPage(),
         '/companion' : (context) => CompanionPage(),
         '/viewaccount' : (context) => ViewAccount(),
         '/notification' : (context)=> NotificationScreen(),
-        '/adduser' : (context) => AddUserScreen(),
-        '/shop' : (context) => ShopCompanionPage()
+        '/groupchat' : (context) => GroupListScreen()
       },
     );
   }

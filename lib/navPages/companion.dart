@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lifeplan/db/dbsetup.dart';
-import 'package:lifeplan/navPages/worldclock.dart';
 import 'package:lifeplan/entities/account.dart';
 import 'package:lifeplan/entities/companion.dart';
-import '../companionshop.dart';
 
 
 // Main Companion Page
@@ -18,13 +16,12 @@ class _CompanionPageState extends State<CompanionPage> {
   LifeplanDatabase db = LifeplanDatabase();
 
   List<String> navPages = [
-    '/schedules',
     '/timer',
     '/home',
     '/planner',
     '/companion'
   ];
-  int currentIndex = 4;
+  int currentIndex = 3;
   String? selectedStart;
   String? selectedEnd;
 
@@ -50,8 +47,8 @@ class _CompanionPageState extends State<CompanionPage> {
                 height: 100,
                 width: 100,
                 child: CircularProgressIndicator(
-                  strokeWidth: 4,
-                  color: Color(0xFFDCF0F0)
+                    strokeWidth: 4,
+                    color: Color(0xFFDCF0F0)
                 ),
               ),
             );
@@ -95,115 +92,29 @@ class _CompanionPageState extends State<CompanionPage> {
                   children: [
                     const SizedBox(height: 10),
                     Text(
-                      userAccount.companion!.name,
-                      style: const TextStyle(fontSize: 18, color: Colors.grey),
+                      "CURRENT COMPANION",
+                      style: const TextStyle(fontSize: 25, fontWeight: FontWeight.bold, color: Colors.blueGrey),
+                    ),
+                    const SizedBox(height: 10),
+                    Text(
+                      userAccount.companion?.name != null ? userAccount.companion!.name : "Unavailable",
+                      style: const TextStyle(fontSize: 20, color: Colors.grey, fontWeight: FontWeight.bold),
                     ),
                     const SizedBox(height: 20),
-
-                    // Main Dialogue Box
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 30.0),
-                      child: Container(
-                        padding: const EdgeInsets.all(12),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(12),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withOpacity(0.1),
-                              blurRadius: 6,
-                              offset: const Offset(2, 2),
-                            )
-                          ],
-                        ),
-                        child: Text(
-                          mainDialogue,
-                          style: const TextStyle(fontSize: 14, color: Colors.black),
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                    ),
-
-                    const SizedBox(height: 20),
-
-                    // Alternate Dialogue Description and Box
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 30.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Padding(
-                            padding: EdgeInsets.only(bottom: 8.0),
-                            child: Text(
-                              'Choose your motivational dialogue:',
-                              style: TextStyle(
-                                fontSize: 13,
-                                fontWeight: FontWeight.w500,
-                                color: Colors.black87,
-                              ),
-                            ),
-                          ),
-                          Container(
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(12),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.black.withOpacity(0.1),
-                                  blurRadius: 6,
-                                  offset: const Offset(2, 2),
-                                )
-                              ],
-                            ),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Radio<String>(
-                                  value: alternateDialogue,
-                                  groupValue: mainDialogue,
-                                  onChanged: (String? value) {
-                                    setState(() {
-                                      final temp = mainDialogue;
-                                      mainDialogue = alternateDialogue;
-                                      alternateDialogue = temp;
-                                    });
-                                  },
-                                ),
-                                const SizedBox(width: 8),
-                                Expanded(
-                                  child: Padding(
-                                    padding:
-                                    const EdgeInsets.symmetric(vertical: 12.0),
-                                    child: Text(
-                                      alternateDialogue,
-                                      style: const TextStyle(
-                                        fontSize: 12.5,
-                                        color: Colors.black,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
 
                     const SizedBox(height: 20),
                     Center(
-                      child: Image.asset(userAccount.companion!.image, height: 400,),
+
+                        child:userAccount.companion != null ?
+                        Image.asset(userAccount.companion!.image, height: 530,) :
+                        Text("No Companion Available", style: TextStyle(fontSize: 20, color: Colors.blueGrey),)
                     ),
 
                     // Shop Button
                     const SizedBox(height: 20),
                     ElevatedButton(
                       onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const ShopCompanionPage()),
-                        );
+                        Navigator.pushNamed(context, '/companiongender');
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.blueGrey,
@@ -214,10 +125,10 @@ class _CompanionPageState extends State<CompanionPage> {
                         ),
                       ),
                       child: const Text(
-                        'Shop New Companion',
+                        'Change Companion',
                         style: TextStyle(
                           color: Colors.white,
-                          fontSize: 14,
+                          fontSize: 15,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -267,6 +178,7 @@ class _CompanionPageState extends State<CompanionPage> {
           ),
           SizedBox(
             height: 20,
+
           ),
           Container(
             height: 50,
@@ -320,15 +232,9 @@ class _CompanionPageState extends State<CompanionPage> {
             ),
           ),
           SizedBox(height: 20),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              Container(
-                width: 260,
-                height: 1.0,
-                color: Colors.blueGrey,
-              ),
-            ],
+          Container(
+            height: 1.0,
+            color: Colors.blueGrey,
           ),
           SizedBox(
             height: 20,
@@ -337,23 +243,8 @@ class _CompanionPageState extends State<CompanionPage> {
             height: 50,
             child: ListTile(
               onTap: () {
-                Navigator.pushNamed(context, '/adduser');
+                Navigator.pushNamed(context, '/groupchat');
               },
-              leading: Icon(
-                Icons.person_add_alt_1,
-                color: Colors.blueGrey,
-                size: 25,
-              ),
-              title: Text(
-
-                "Add user",
-                style: TextStyle(color: Colors.blueGrey),
-              ),
-            ),
-          ),
-          Container(
-            height: 50,
-            child: ListTile(
               leading: Icon(
                 Icons.message,
                 color: Colors.blueGrey,
@@ -368,15 +259,9 @@ class _CompanionPageState extends State<CompanionPage> {
           SizedBox(
             height: 20,
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              Container(
-                width: 260,
-                height: 1.0,
-                color: Colors.blueGrey,
-              ),
-            ],
+          Container(
+            height: 1.0,
+            color: Colors.blueGrey,
           ),
           SizedBox(
             height: 20,
@@ -385,29 +270,15 @@ class _CompanionPageState extends State<CompanionPage> {
             height: 50,
             child: ListTile(
               onTap: () {
-                Navigator.pushNamed(context, '/shop');
+                db.logout(context);
               },
               leading: Icon(
-                Icons.shopping_bag_outlined,
+                Icons.logout,
                 color: Colors.blueGrey,
                 size: 25,
               ),
               title: Text(
-                "Shop",
-                style: TextStyle(color: Colors.blueGrey),
-              ),
-            ),
-          ),
-          Container(
-            height: 50,
-            child: ListTile(
-              leading: Icon(
-                Icons.monetization_on,
-                color: Colors.blueGrey,
-                size: 25,
-              ),
-              title: Text(
-                "Points",
+                "Logout",
                 style: TextStyle(color: Colors.blueGrey),
               ),
             ),
@@ -429,10 +300,6 @@ class _CompanionPageState extends State<CompanionPage> {
         },
         currentIndex: index,
         items: <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.calendar_month_outlined),
-            label: "Schedules",
-          ),
           BottomNavigationBarItem(
             icon: Icon(Icons.timer_outlined),
             label: "Timer",

@@ -12,10 +12,10 @@ class Event {
     required String title,
     required String location
   }):
-      _startTime = startTime,
-      _endTime = endTime,
-      _title = title,
-      _location = location;
+        _startTime = startTime,
+        _endTime = endTime,
+        _title = title,
+        _location = location;
 
   String get location {
     return _location;

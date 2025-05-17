@@ -23,21 +23,21 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       "text":
       "Simplify today, master tomorrow. Organize your tasks, set your goals, and bring balance to your daily routine—one step at a time.",
       "image":
-      "https://static.vecteezy.com/system/resources/previews/055/773/056/non_2x/woman-organizing-household-things-flat-icon-vector.jpg"
+      "assets/info1.jpg"
     },
     {
       "title": "Reminders",
       "text":
       "A gentle reminder that it’s time to turn plans into action. Your next task is ready when you are.",
       "image":
-      "https://static.vecteezy.com/system/resources/previews/055/773/056/non_2x/woman-organizing-household-things-flat-icon-vector.jpg"
+      "assets/info2.jpg"
     },
     {
       "title": "Schedules",
       "text":
       "A schedule that fits your life—not the other way around. Tailored to your preferences, making every day more manageable.",
       "image":
-      "https://static.vecteezy.com/system/resources/previews/055/773/056/non_2x/woman-organizing-household-things-flat-icon-vector.jpg"
+      "assets/info3.jpg"
     },
   ];
 
@@ -91,7 +91,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                         child: AnimatedOpacity(
                           duration: const Duration(milliseconds: 500),
                           opacity: currentPage == index ? 1.0 : 0.0,
-                          child: Image.network(
+                          child: Image.asset(
                             onboardingData[index]["image"]!,
                             fit: BoxFit.contain,
                           ),

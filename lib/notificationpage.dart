@@ -1,5 +1,5 @@
 import 'dart:async';
-
+import 'package:lifeplan/db/dbsetup.dart';
 import 'package:flutter/material.dart';
 import 'notificationsetup.dart';
 
@@ -9,23 +9,9 @@ class NotificationScreen extends StatefulWidget {
 }
 
 class _NotificationScreenState extends State<NotificationScreen> {
+  LifeplanDatabase db = LifeplanDatabase();
   bool isReminderOn = true;
   bool isEmailUpdateOn = true;
-  String? companionReply;
-  void updateCompanionReply(String reply) {
-    setState(() {
-      companionReply = reply;
-    });
-  }
-  @override
-  void initState() {
-    super.initState();
-
-    Timer.periodic(Duration(minutes: 2), (timer) {
-      print('Attempting to show companion notification from NotificationPage...');
-      showCompanionReplyNotification('Ju04hfBnfV4BAhTDiDlI', onReply: updateCompanionReply);
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -87,24 +73,6 @@ class _NotificationScreenState extends State<NotificationScreen> {
               onChanged: (value) => setState(() => isEmailUpdateOn = value),
             ),
             const SizedBox(height: 30),
-            if (companionReply != null) ...[
-              Container(
-                width: double.infinity,
-                padding: EdgeInsets.all(12),
-                margin: EdgeInsets.only(bottom: 10),
-                decoration: BoxDecoration(
-                  color: Colors.teal[100],
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Row(
-                  children: [
-                    Icon(Icons.chat_bubble, color: Colors.teal[900]),
-                    SizedBox(width: 10),
-                    Expanded(child: Text(companionReply!, style: TextStyle(fontSize: 16))),
-                  ],
-                ),
-              ),
-            ],
             Expanded(
               child: Container(
                 width: double.infinity,
@@ -165,6 +133,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
           ),
           SizedBox(
             height: 20,
+
           ),
           Container(
             height: 50,
@@ -218,15 +187,9 @@ class _NotificationScreenState extends State<NotificationScreen> {
             ),
           ),
           SizedBox(height: 20),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              Container(
-                width: 260,
-                height: 1.0,
-                color: Colors.blueGrey,
-              ),
-            ],
+          Container(
+            height: 1.0,
+            color: Colors.blueGrey,
           ),
           SizedBox(
             height: 20,
@@ -235,22 +198,8 @@ class _NotificationScreenState extends State<NotificationScreen> {
             height: 50,
             child: ListTile(
               onTap: () {
-                Navigator.pushNamed(context, '/adduser');
+                Navigator.pushNamed(context, '/groupchat');
               },
-              leading: Icon(
-                Icons.person_add_alt_1,
-                color: Colors.blueGrey,
-                size: 25,
-              ),
-              title: Text(
-                "Add user",
-                style: TextStyle(color: Colors.blueGrey),
-              ),
-            ),
-          ),
-          Container(
-            height: 50,
-            child: ListTile(
               leading: Icon(
                 Icons.message,
                 color: Colors.blueGrey,
@@ -265,15 +214,9 @@ class _NotificationScreenState extends State<NotificationScreen> {
           SizedBox(
             height: 20,
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              Container(
-                width: 260,
-                height: 1.0,
-                color: Colors.blueGrey,
-              ),
-            ],
+          Container(
+            height: 1.0,
+            color: Colors.blueGrey,
           ),
           SizedBox(
             height: 20,
@@ -282,29 +225,15 @@ class _NotificationScreenState extends State<NotificationScreen> {
             height: 50,
             child: ListTile(
               onTap: () {
-                Navigator.pushNamed(context, '/shop');
+                db.logout(context);
               },
               leading: Icon(
-                Icons.shopping_bag_outlined,
+                Icons.logout,
                 color: Colors.blueGrey,
                 size: 25,
               ),
               title: Text(
-                "Shop",
-                style: TextStyle(color: Colors.blueGrey),
-              ),
-            ),
-          ),
-          Container(
-            height: 50,
-            child: ListTile(
-              leading: Icon(
-                Icons.monetization_on,
-                color: Colors.blueGrey,
-                size: 25,
-              ),
-              title: Text(
-                "Points",
+                "Logout",
                 style: TextStyle(color: Colors.blueGrey),
               ),
             ),

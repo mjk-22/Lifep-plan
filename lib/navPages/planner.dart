@@ -5,6 +5,9 @@ import 'package:lifeplan/entities/event.dart';
 import 'package:intl/intl.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 
 class PlannerPage extends StatefulWidget {
   const PlannerPage({super.key});
@@ -16,7 +19,6 @@ class PlannerPage extends StatefulWidget {
 class _PlannerPageState extends State<PlannerPage> {
   LifeplanDatabase db = LifeplanDatabase();
   List<String> navPages = [
-    '/schedules',
     '/timer',
     '/home',
     '/planner',
@@ -83,7 +85,7 @@ class _PlannerPageState extends State<PlannerPage> {
     }
   }
 
-  int currentIndex = 3;
+  int currentIndex = 2;
   String? selectedStart;
   String? selectedEnd;
 
@@ -150,7 +152,7 @@ class _PlannerPageState extends State<PlannerPage> {
               crossAxisCount: 1,
               children: List.generate(userAccount.events?.length ?? 0, (index) {
                 return Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 100, horizontal: 20),
+                  padding: const EdgeInsets.symmetric(vertical: 92, horizontal: 20),
                   child: Container(
 
                     decoration: BoxDecoration(
@@ -184,7 +186,11 @@ class _PlannerPageState extends State<PlannerPage> {
                           children: [
                             Text("Location", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20, color: Colors.white)),
                             SizedBox(width: 20,),
-                            Text(userAccount.events![index].location, style: TextStyle(fontWeight: FontWeight.w300, fontSize: 20, color: Colors.white)),
+                            TextButton(
+                              onPressed: () {
+                                viewLocation(context, userAccount.events![index].location, "AIzaSyB5-Sqwn0_67M1gulBa5MgQK43gfA7Xf3o");
+                              },
+                              child: Text(userAccount.events![index].location, style: TextStyle(fontWeight: FontWeight.w300, fontSize: 20, color: Colors.white, decoration: TextDecoration.underline, decorationColor: Colors.white)),),
                           ],
                         ),
                         Row(
@@ -239,14 +245,10 @@ class _PlannerPageState extends State<PlannerPage> {
         unselectedItemColor: Colors.grey,
         onTap: (index) {
           _tappedItem(index);
-          Navigator.pushNamed(context, navPages[index]);
+          Navigator.pushNamed(context, navPages[currentIndex]);
         },
         currentIndex: index,
         items: <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.calendar_month_outlined),
-            label: "Schedules",
-          ),
           BottomNavigationBarItem(
             icon: Icon(Icons.timer_outlined),
             label: "Timer",
@@ -361,20 +363,9 @@ class _PlannerPageState extends State<PlannerPage> {
           Container(
             height: 50,
             child: ListTile(
-              leading: Icon(
-                Icons.person_add_alt_1,
-                color: Colors.blueGrey,
-                size: 25,
-              ),
-              title: Text(
-                "Add user",
-                style: TextStyle(color: Colors.blueGrey),
-              ),
-            ),
-          ),
-          Container(
-            height: 50,
-            child: ListTile(
+              onTap: () {
+                Navigator.pushNamed(context, '/groupchat');
+              },
               leading: Icon(
                 Icons.message,
                 color: Colors.blueGrey,
@@ -395,41 +386,6 @@ class _PlannerPageState extends State<PlannerPage> {
           ),
           SizedBox(
             height: 20,
-          ),
-          Container(
-            height: 50,
-            child: ListTile(
-              onTap: () {
-                Navigator.pushNamed(context, '/shop');
-              },
-              leading: Icon(
-                Icons.shopping_bag_outlined,
-                color: Colors.blueGrey,
-                size: 25,
-              ),
-              title: Text(
-                "Shop",
-                style: TextStyle(color: Colors.blueGrey),
-              ),
-            ),
-          ),
-          Container(
-            height: 50,
-            child: ListTile(
-              leading: Icon(
-                Icons.monetization_on,
-                color: Colors.blueGrey,
-                size: 25,
-              ),
-              title: Text(
-                "Points",
-                style: TextStyle(color: Colors.blueGrey),
-              ),
-            ),
-          ),
-          Container(
-            height: 1.0,
-            color: Colors.blueGrey,
           ),
           Container(
             height: 50,
@@ -660,5 +616,77 @@ class _PlannerPageState extends State<PlannerPage> {
           );
         }).toList(),
         onChanged: onChanged);
+  }
+
+  Future<LatLng?> parseLocation(String location, String apiKey) async {
+    final latLngPattern = RegExp(r'^-?\d+(\.\d+)?\s*,\s*-?\d+(\.\d+)?$');
+    if (latLngPattern.hasMatch(location)) {
+      final parts = location.split(',');
+      final lat = double.tryParse(parts[0].trim());
+      final lng = double.tryParse(parts[1].trim());
+      if (lat != null && lng != null) {
+        return LatLng(lat, lng);
+      }
+    }
+
+    final url =
+        'https://maps.googleapis.com/maps/api/geocode/json?address=${Uri.encodeComponent(location)}&key=$apiKey';
+
+    final response = await http.get(Uri.parse(url));
+
+    final json = jsonDecode(response.body);
+    if (json['status'] == 'OK') {
+      final lat = json['results'][0]['geometry']['location']['lat'];
+      final lng = json['results'][0]['geometry']['location']['lng'];
+      return LatLng(lat, lng);
+    }
+
+    return null;
+  }
+
+
+  void viewLocation(BuildContext context, String location, String apiKey) async{
+    final latLocation = await parseLocation(location, apiKey);
+
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text('Event Location'),
+          content: latLocation != null
+              ? Container(
+            width: 300,
+            height: 300,
+            decoration: BoxDecoration(
+                color: Colors.blue[100]
+            ),
+            child: GoogleMap(
+              initialCameraPosition: CameraPosition(
+                target: latLocation,
+                zoom: 15,
+              ),
+              markers: {
+                Marker(markerId: MarkerId('location'), position: latLocation),
+              },
+            ),
+          )
+              : SizedBox(
+            width: 300,
+            height: 100,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text("Enter real coordinates to view your event location on a map!", style: TextStyle(fontSize: 20, color: Colors.blueGrey)),
+                SizedBox(height: 10,),
+                Text("Result: ${location}", style: TextStyle(fontSize: 16, color: Colors.blueGrey, fontWeight: FontWeight.bold)),
+              ],
+            ),
+          ), // fallback text
+          actions: [
+            TextButton(onPressed: () => Navigator.pop(context), child: Text('Close')),
+          ],
+        );
+      },
+    );
   }
 }

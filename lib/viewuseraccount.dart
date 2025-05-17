@@ -93,32 +93,33 @@ class _ViewAccountState extends State<ViewAccount> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             SizedBox(height: 40,),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text("Email Address:"),
-                            SizedBox(
-                              height: 30,
-                              width: 150,
-                              child: TextFormField(
-                                controller: emailController,
-                                cursorColor: Colors.black,
-                                decoration: InputDecoration(
-                                  contentPadding:  EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                                  labelText: "email",
-                                  labelStyle: TextStyle(color: Colors.black),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(color: Colors.transparent),
-                                  ),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(color: Colors.grey),
-                                  ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text("Email Address:"),
+                                SizedBox(
+                                  height: 30,
+                                  width: 150,
+                                  child: TextFormField(
+                                    readOnly: true,
+                                    controller: emailController,
+                                    cursorColor: Colors.black,
+                                    decoration: InputDecoration(
+                                      contentPadding:  EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                                      labelText: "email",
+                                      labelStyle: TextStyle(color: Colors.black),
+                                      focusedBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(color: Colors.transparent),
+                                      ),
+                                      enabledBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(color: Colors.grey),
+                                      ),
 
+                                    ),
+                                  ),
                                 ),
-                              ),
+                              ],
                             ),
-                          ],
-                        ),
                             SizedBox(height: 40,),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -229,8 +230,10 @@ class _ViewAccountState extends State<ViewAccount> {
                         style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.black, elevation: 0),
                         onPressed: ()async{
-                          await db.updateAccountUsername(usernameController.text);
-                          setState(() {});
+                          if (usernameController.text.isNotEmpty) {
+                            await db.updateAccountUsername(usernameController.text);
+                            setState(() {});
+                          }
                         },
                         child: Text(
                           "Save",
@@ -341,20 +344,9 @@ class _ViewAccountState extends State<ViewAccount> {
           Container(
             height: 50,
             child: ListTile(
-              leading: Icon(
-                Icons.person_add_alt_1,
-                color: Colors.blueGrey,
-                size: 25,
-              ),
-              title: Text(
-                "Add user",
-                style: TextStyle(color: Colors.blueGrey),
-              ),
-            ),
-          ),
-          Container(
-            height: 50,
-            child: ListTile(
+              onTap: () {
+                Navigator.pushNamed(context, '/groupchat');
+              },
               leading: Icon(
                 Icons.message,
                 color: Colors.blueGrey,
@@ -375,41 +367,6 @@ class _ViewAccountState extends State<ViewAccount> {
           ),
           SizedBox(
             height: 20,
-          ),
-          Container(
-            height: 50,
-            child: ListTile(
-              onTap: () {
-                Navigator.pushNamed(context, '/shop');
-              },
-              leading: Icon(
-                Icons.shopping_bag_outlined,
-                color: Colors.blueGrey,
-                size: 25,
-              ),
-              title: Text(
-                "Shop",
-                style: TextStyle(color: Colors.blueGrey),
-              ),
-            ),
-          ),
-          Container(
-            height: 50,
-            child: ListTile(
-              leading: Icon(
-                Icons.monetization_on,
-                color: Colors.blueGrey,
-                size: 25,
-              ),
-              title: Text(
-                "Points",
-                style: TextStyle(color: Colors.blueGrey),
-              ),
-            ),
-          ),
-          Container(
-            height: 1.0,
-            color: Colors.blueGrey,
           ),
           Container(
             height: 50,

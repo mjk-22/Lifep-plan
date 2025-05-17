@@ -4,50 +4,31 @@ import 'dart:async';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:lifeplan/db/dbsetup.dart';
 import 'package:lifeplan/entities/account.dart';
-
-import 'notificationsetup.dart';
-
+import 'package:awesome_notifications/awesome_notifications.dart';
+import 'package:lifeplan/notificationsetup.dart';
 class NavPage extends StatefulWidget {
   const NavPage({super.key});
 
   @override
   State<NavPage> createState() => _NavPageState();
-
-
 }
 
 class _NavPageState extends State<NavPage> {
   LifeplanDatabase db = LifeplanDatabase();
-   Timer? notificationTimer;
   List<String> navPages = [
-    '/schedules',
     '/timer',
     '/home',
     '/planner',
     '/companion'
-   ];
+  ];
   @override
   void initState() {
     super.initState();
-    startNotificationLoop();
-  }
-
-  void startNotificationLoop() {
-    notificationTimer?.cancel();
-
-    notificationTimer = Timer.periodic(Duration(seconds: 20), (timer) {
-      showCompanionReplyNotification('Ju04hfBnfV4BAhTDiDlI');
+    Timer.periodic(Duration(minutes: 2), (timer) {
+      showCompanionReplyAwesome('Ju04hfBnfV4BAhTDiDlI');
     });
   }
-
-  @override
-  void dispose() {
-    notificationTimer?.cancel();
-    super.dispose();
-  }
-
-
-  int currentIndex = 2;
+  int currentIndex = 1;
   String? selectedStart;
   String? selectedEnd;
 
@@ -87,6 +68,21 @@ class _NavPageState extends State<NavPage> {
         if (selectedEnd == "PM" && endHour < 12) endHour += 12;
         if (selectedEnd == "AM" && endHour == 12) endHour = 0;
 
+        if (startMin > 59 || endMin > 59) {
+          updateSuccess("Enter a valid time range!");
+          return;
+        }
+
+        if (startHour < 0 || startHour > 23 || endHour < 0 || endHour > 24) {
+          updateSuccess("Hour must be between 0 and 24.");
+          return;
+        }
+
+        if (startMin < 0 || startMin > 59 || endMin < 0 || endMin > 59) {
+          updateSuccess("Minutes must be between 0 and 59.");
+          return;
+        }
+
         DateTime now = DateTime.now();
         DateTime startTime = DateTime(now.year, now.month, now.day, startHour, startMin);
         DateTime endTime = DateTime(now.year, now.month, now.day, endHour, endMin);
@@ -114,7 +110,6 @@ class _NavPageState extends State<NavPage> {
       updateSuccess("Fill out everything");
     }
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -201,38 +196,15 @@ class _NavPageState extends State<NavPage> {
                     SizedBox(
                       height: 70,
                     ),
-                    Row(
-                      children: [
-                        Text(
-                          "Current Points",
-                          style: TextStyle(fontSize: 20),
-                        ),
-                        SizedBox(
-                          width: 40,
-                        ),
-                Container(
-                  height: 40,
-                  width: 170,
-                  decoration: BoxDecoration(
-                      color: Colors.black,
-                      borderRadius: BorderRadius.circular(5),
-                      boxShadow: [
-                        BoxShadow(
-                            color: Colors.black.withOpacity(0.2),
-                            blurRadius: 3,
-                            offset: Offset(0, 4))
-                      ]),
-                  child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.black, elevation: 0),
-                      onPressed: (){},
-                      child: Text(
-                        "100 points",
-                        style: TextStyle(color: Colors.white, fontSize: 17),
-                      )),
-                )
-                      ],
+
+                    Text(
+                      "Your companion is there to support you! Don't give up... Someone will always be there to uplift your spirit!",
+                      style: TextStyle(fontSize: 20, ), textAlign: TextAlign.center,
                     ),
+                    SizedBox(
+                      width: 40,
+                    ),
+
                     SizedBox(height: 100,),
                     Container(
                       color: Colors.blueGrey,
@@ -240,30 +212,8 @@ class _NavPageState extends State<NavPage> {
                       width: 400,
                     ),
                     SizedBox(height: 70,),
-                    Container(
-                      height: 40,
-                      width: 170,
-                      decoration: BoxDecoration(
-                          color: Colors.black,
-                          borderRadius: BorderRadius.circular(5),
-                          boxShadow: [
-                            BoxShadow(
-                                color: Colors.black.withOpacity(0.2),
-                                blurRadius: 3,
-                                offset: Offset(0, 4))
-                          ]),
-                      child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.black, elevation: 0),
-                          onPressed: (){},
-                          child: Text(
-                            "Your Events",
-                            style: TextStyle(color: Colors.white, fontSize: 17),
-                          )),
-                    ),
-                    SizedBox(height: 10,),
                     Text(
-                      "Complete your task to earn points and level up your progress!",
+                      "Enter existent coordinates in your event location to later view it on the map!",
                       style: TextStyle(fontSize: 20), textAlign: TextAlign.center,
                     ),
                   ],
@@ -287,10 +237,6 @@ class _NavPageState extends State<NavPage> {
         },
         currentIndex: index,
         items: <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.calendar_month_outlined),
-            label: "Schedules",
-          ),
           BottomNavigationBarItem(
             icon: Icon(Icons.timer_outlined),
             label: "Timer",
@@ -405,20 +351,9 @@ class _NavPageState extends State<NavPage> {
           Container(
             height: 50,
             child: ListTile(
-              leading: Icon(
-                Icons.person_add_alt_1,
-                color: Colors.blueGrey,
-                size: 25,
-              ),
-              title: Text(
-                "Add user",
-                style: TextStyle(color: Colors.blueGrey),
-              ),
-            ),
-          ),
-          Container(
-            height: 50,
-            child: ListTile(
+              onTap: () {
+                Navigator.pushNamed(context, '/groupchat');
+              },
               leading: Icon(
                 Icons.message,
                 color: Colors.blueGrey,
@@ -440,41 +375,6 @@ class _NavPageState extends State<NavPage> {
           SizedBox(
             height: 20,
           ),
-          Container(
-            height: 50,
-            child: ListTile(
-              onTap: () {
-                Navigator.pushNamed(context, '/shop');
-              },
-              leading: Icon(
-                Icons.shopping_bag_outlined,
-                color: Colors.blueGrey,
-                size: 25,
-              ),
-              title: Text(
-                "Shop",
-                style: TextStyle(color: Colors.blueGrey),
-              ),
-            ),
-          ),
-          Container(
-            height: 50,
-            child: ListTile(
-              leading: Icon(
-                Icons.monetization_on,
-                color: Colors.blueGrey,
-                size: 25,
-              ),
-              title: Text(
-                "Points",
-                style: TextStyle(color: Colors.blueGrey),
-              ),
-            ),
-          ),
-    Container(
-    height: 1.0,
-    color: Colors.blueGrey,
-    ),
           Container(
             height: 50,
             child: ListTile(
@@ -732,4 +632,3 @@ class _NavPageState extends State<NavPage> {
         onChanged: onChanged);
   }
 }
-

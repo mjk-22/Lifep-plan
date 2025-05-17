@@ -109,7 +109,7 @@ class _LoginPageState extends State<LoginPage> {
                     "Create new Account",
                     Color(0xFFEEFFFF),
                     Colors.black,
-                    () async {
+                        () async {
                       Navigator.pushNamed(context, '/createaccount');
                     },
                   )
@@ -179,7 +179,7 @@ class _LoginPageState extends State<LoginPage> {
         context: context,
         builder: (context) {
           return AlertDialog(
-            backgroundColor: Colors.white,
+              backgroundColor: Colors.white,
               title: Text("Reset Password"),
               content: Container(
                 height: 100,

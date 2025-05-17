@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 
 class AccountPage extends StatefulWidget {
@@ -34,14 +35,14 @@ class _AccountPageState extends State<AccountPage> {
                 Container(
                   width: 150,
                   decoration: BoxDecoration(
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.3),
-                        spreadRadius: 1,
-                        blurRadius: 10,
-                        offset: Offset(0, 6)
-                      )
-                    ]
+                      boxShadow: [
+                        BoxShadow(
+                            color: Colors.black.withOpacity(0.3),
+                            spreadRadius: 1,
+                            blurRadius: 10,
+                            offset: Offset(0, 6)
+                        )
+                      ]
                   ),
                   child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
@@ -96,4 +97,3 @@ class _AccountPageState extends State<AccountPage> {
     );
   }
 }
-

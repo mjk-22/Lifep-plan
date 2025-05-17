@@ -55,4 +55,3 @@ class _CompanionGenderState extends State<CompanionGender> {
     );
   }
 }
-

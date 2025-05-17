@@ -42,8 +42,10 @@ dev_dependencies:
   cloud_firestore_platform_interface: any
   cloud_firestore: any
   firebase_auth: any
-  flutter_local_notifications: ^19.1.0
   intl: any
+  google_maps_flutter: ^2.5.0
+  http: ^0.13.6
+  awesome_notifications: any
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
@@ -66,6 +68,9 @@ flutter:
     - assets/accountpage.png
     - assets/google.png
     - assets/homepage.png
+    - assets/info1.jpg
+    - assets/info2.jpg
+    - assets/info3.jpg
     - assets/companions/pic1.png
     - assets/companions/pic2.png
     - assets/companions/pic3.png

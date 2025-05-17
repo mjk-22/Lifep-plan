@@ -1,3 +1,4 @@
+
 import 'event.dart';
 import 'companion.dart';
 class Account {
@@ -14,10 +15,10 @@ class Account {
     required List<Event>? events,
     required Companion? companion
   }): _email = email,
-      _username = username,
-      _isNotificationOn = isNotificationOn,
-      _events = events,
-      _companion = companion;
+        _username = username,
+        _isNotificationOn = isNotificationOn,
+        _events = events,
+        _companion = companion;
 
   String get email {
     return _email;
