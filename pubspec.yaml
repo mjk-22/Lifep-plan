@@ -39,6 +39,13 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  cloud_firestore_platform_interface: any
+  cloud_firestore: any
+  firebase_auth: any
+  intl: any
+  google_maps_flutter: ^2.5.0
+  http: ^0.13.6
+  awesome_notifications: any
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
@@ -61,6 +68,21 @@ flutter:
     - assets/accountpage.png
     - assets/google.png
     - assets/homepage.png
+    - assets/info1.jpg
+    - assets/info2.jpg
+    - assets/info3.jpg
+    - assets/companions/pic1.png
+    - assets/companions/pic2.png
+    - assets/companions/pic3.png
+    - assets/companions/pic4.png
+    - assets/companions/pic5.png
+    - assets/companions/pic6.png
+    - assets/companions/pic7.png
+    - assets/companions/pic8.png
+    - assets/companions/pic9.png
+    - assets/companions/pic10.png
+    - assets/companions/pic11.png
+    - assets/companions/pic12.png
 
   # To add assets to your application, add an assets section, like this:
   # assets:
